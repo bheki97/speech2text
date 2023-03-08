@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lg"
+        android:gravity="center"
+        android:fontFamily="sans-serif-medium"
+        android:textFontWeight="1000"
+        android:textColor="@color/blue_zodiac"
+        android:textSize="70dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp"
+
+        >
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/white"
+
+            app:startIconDrawable="@drawable/email_24"
+            app:startIconTint="@color/carrot_orange"
+
+
+
+            android:hint="@string/log_email_hint"
+
+
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/white"
+
+            app:startIconDrawable="@drawable/lock_24"
+            app:startIconTint="@color/carrot_orange"
+
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/carrot_orange"
+
+            android:hint="@string/pass_hint"
+
+
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/frgt_pass"
+
+                android:gravity="end"
+                android:textColor="@color/blue_pin"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginVertical="20dp"
+            android:background="@color/blue_zodiac"
+            android:text="Login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/blue_zodiac" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_lnk"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>
