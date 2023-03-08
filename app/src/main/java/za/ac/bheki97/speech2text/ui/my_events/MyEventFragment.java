@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.ui.gallery;
+package za.ac.bheki97.speech2text.ui.my_events;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,23 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import za.ac.bheki97.speech2text.databinding.FragmentMyEventsBinding;
 
-import za.ac.bheki97.speech2text.databinding.FragmentGalleryBinding;
+public class MyEventFragment extends Fragment {
 
-public class GalleryFragment extends Fragment {
-
-    private FragmentGalleryBinding binding;
+    private FragmentMyEventsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        MyEventViewModel myEventViewModel =
+                new ViewModelProvider(this).get(MyEventViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentMyEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        myEventViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
