@@ -19,6 +19,6 @@
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="za.ac.bheki97.speech2text.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_upcoming_events"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

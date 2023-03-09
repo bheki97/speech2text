@@ -7,6 +7,6 @@ import za.ac.bheki97.speech2text.model.user.User;
 
 public interface UserApi {
 
-    @POST
+    @POST("/register")
     Call<User> registerAcc(@Body User user);
 }

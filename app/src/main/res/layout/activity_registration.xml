@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.google.android.material.textfield.TextInputLayout
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -40,10 +41,12 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/firstnameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -57,6 +60,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastnameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -73,11 +77,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <RadioButton
+                android:id="@+id/maleRadio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Male"/>
             <RadioButton
+                android:id="@+id/femaleRadio"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -88,6 +94,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.google.android.material.textfield.TextInputLayout
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -96,14 +103,16 @@
                 app:boxBackgroundMode="outline"
                 app:boxBackgroundColor="@color/white"
 
-                android:hint="@string/reg_name_hint"
+                android:hint="@string/reg_email_hint"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -112,16 +121,18 @@
                 app:boxBackgroundMode="outline"
                 app:boxBackgroundColor="@color/white"
 
-                android:hint="@string/reg_surname_hint"
+                android:hint="@string/reg_contact_hint"
 
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contactsInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -142,6 +153,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwrdInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>

@@ -52,8 +52,10 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        TextView usernameView = (TextView)binding.navView.getRootView().findViewById(R.id.username);
-        TextView emailView = (TextView)binding.navView.getRootView().findViewById(R.id.emailView);
+
+
+        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
         usernameView.setText(user.getFirstname()+" "+ user.getLastname());
         emailView.setText(user.getEmail());
     }

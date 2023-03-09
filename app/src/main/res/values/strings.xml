@@ -11,6 +11,10 @@
 
     <string name="reg_name_hint">Enter Name</string>
     <string name="reg_surname_hint">Enter Surname</string>
+    <string name="reg_email_hint">Enter e-mail</string>
+    <string name="reg_contact_hint">Enter Mobile No.</string>
+
+
     <string name="title_activity_main2">MainActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,7 +25,7 @@
 
     <string name="menu_scan">Scan QR Code</string>
     <string name="menu_my_events">My Events</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_upcoming_events">Upcoming Events</string>
     <string name="menu_logout">Logout</string>
     <string name="title_activity_home">HomeActivity</string>
 
