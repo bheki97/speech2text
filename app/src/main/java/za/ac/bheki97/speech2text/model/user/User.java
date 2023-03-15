@@ -9,6 +9,9 @@ public class User implements Serializable {
     private String lastname;
     private Character gender;
     private Long contactNo;
+    private String password;
+
+
 
 
     public String getFirstname() {
@@ -50,5 +53,13 @@ public class User implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

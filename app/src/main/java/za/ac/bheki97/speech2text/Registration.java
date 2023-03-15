@@ -8,13 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityRegistrationBinding;
-import za.ac.bheki97.speech2text.exception.EmptyFieldException;
+import za.ac.bheki97.speech2text.exception.UserInputFieldException;
 import za.ac.bheki97.speech2text.model.user.User;
 import za.ac.bheki97.speech2text.model.user.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.user.retrofit.UserApi;
@@ -61,8 +59,8 @@ public class Registration extends AppCompatActivity {
                User user = createUserFromUserInput();
                sendRegisterRequest(user);
            }catch (NumberFormatException numExc){
-               Toast.makeText(this,numExc.getMessage(),Toast.LENGTH_SHORT).show();
-           }catch (EmptyFieldException exc){
+               Toast.makeText(this,"Mobile Number Invalid",Toast.LENGTH_SHORT).show();
+           }catch (UserInputFieldException exc){
                Toast.makeText(this,exc.getMessage(),Toast.LENGTH_SHORT).show();
 
            }
@@ -70,20 +68,25 @@ public class Registration extends AppCompatActivity {
         });
     }
 
-    private User createUserFromUserInput() throws NumberFormatException, EmptyFieldException {
+    private User createUserFromUserInput() throws NumberFormatException, UserInputFieldException {
         User user = new User();
         user.setFirstname(binding.firstnameInput.getText().toString());
         if(user.getFirstname().isEmpty()){
             System.out.println("field empty");
-            throw new EmptyFieldException("First Name Field is Empty");
+            throw new UserInputFieldException("First Name Field is Empty");
         }
         user.setLastname(binding.lastnameInput.getText().toString());
         if(user.getLastname().isEmpty()){
-            throw new EmptyFieldException("Last Name Field is Empty");
+            throw new UserInputFieldException("Last Name Field is Empty");
         }
         user.setEmail(binding.emailInput.getText().toString());
         if(user.getEmail().isEmpty()){
-            throw new EmptyFieldException("Email Field is Empty");
+            throw new UserInputFieldException("Email Field is Empty");
+        }
+
+        user.setPassword(binding.passwrdInput.getText().toString());
+        if(user.getPassword().isEmpty()){
+            throw new UserInputFieldException("Password Field is Empty");
         }
 
 
@@ -92,11 +95,11 @@ public class Registration extends AppCompatActivity {
         }else if(binding.maleRadio.isChecked()){
             user.setGender(new Character('M'));
         }else{
-            throw new EmptyFieldException("No Gender is Selected");
+            throw new UserInputFieldException("No Gender is Selected");
         }
 
         if(binding.contactsInput.getText().toString().isEmpty()){
-            throw new EmptyFieldException("Email Field is Empty");
+            throw new UserInputFieldException("Email Field is Empty");
         }else{
             user.setContactNo(new Long(binding.contactsInput.getText().toString()));
         }
