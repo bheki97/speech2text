@@ -8,10 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityRegistrationBinding;
+import za.ac.bheki97.speech2text.exception.EmptyFieldException;
 import za.ac.bheki97.speech2text.model.user.User;
 import za.ac.bheki97.speech2text.model.user.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.user.retrofit.UserApi;
@@ -54,34 +57,70 @@ public class Registration extends AppCompatActivity {
 
     private void addOnClickListenerForRegisterBtn() {
         registerButton.setOnClickListener(view ->{
-            User user = new User();
-            user.setFirstname(binding.firstnameInput.getText().toString());
-            user.setLastname(binding.lastnameInput.getText().toString());
-            user.setEmail(binding.emailInput.getText().toString());
-            user.setContactNo(new Long(binding.contactsInput.getText().toString()));
-            if(binding.femaleRadio.isChecked()){
-                user.setGender(new Character('F'));
-            }else{
-                user.setGender(new Character('M'));
-            }
+           try {
+               User user = createUserFromUserInput();
+               sendRegisterRequest(user);
+           }catch (NumberFormatException numExc){
+               Toast.makeText(this,numExc.getMessage(),Toast.LENGTH_SHORT).show();
+           }catch (EmptyFieldException exc){
+               Toast.makeText(this,exc.getMessage(),Toast.LENGTH_SHORT).show();
 
-            userApi.registerAcc(user).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    Toast.makeText(Registration.this,"Successfully Registered!!!!",Toast.LENGTH_LONG);
-                    Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
-                    homeIntent.putExtra("user",user);
-                    startActivity(homeIntent);
-
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(Registration.this,"Failed To Register",Toast.LENGTH_LONG);
-                }
-            });
+           }
 
         });
+    }
+
+    private User createUserFromUserInput() throws NumberFormatException, EmptyFieldException {
+        User user = new User();
+        user.setFirstname(binding.firstnameInput.getText().toString());
+        if(user.getFirstname().isEmpty()){
+            System.out.println("field empty");
+            throw new EmptyFieldException("First Name Field is Empty");
+        }
+        user.setLastname(binding.lastnameInput.getText().toString());
+        if(user.getLastname().isEmpty()){
+            throw new EmptyFieldException("Last Name Field is Empty");
+        }
+        user.setEmail(binding.emailInput.getText().toString());
+        if(user.getEmail().isEmpty()){
+            throw new EmptyFieldException("Email Field is Empty");
+        }
+
+
+        if(binding.femaleRadio.isChecked()){
+            user.setGender(new Character('F'));
+        }else if(binding.maleRadio.isChecked()){
+            user.setGender(new Character('M'));
+        }else{
+            throw new EmptyFieldException("No Gender is Selected");
+        }
+
+        if(binding.contactsInput.getText().toString().isEmpty()){
+            throw new EmptyFieldException("Email Field is Empty");
+        }else{
+            user.setContactNo(new Long(binding.contactsInput.getText().toString()));
+        }
+
+        return user;
+    }
+
+    private void sendRegisterRequest(User user) {
+        userApi.registerAcc(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Toast.makeText(Registration.this,"Successfully Registered!!!!",Toast.LENGTH_LONG);
+                Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
+                homeIntent.putExtra("user",user);
+                startActivity(homeIntent);
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(Registration.this,"Failed To Register",Toast.LENGTH_LONG);
+            }
+        });
+
     }
 
     private void failedToRegister() {
