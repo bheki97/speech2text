@@ -21,13 +21,13 @@ import za.ac.bheki97.speech2text.model.user.User;
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private User user;
+    //private User user;
     private ActivityHomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        user = (User) getIntent().getSerializableExtra("user");
+        //user = (User) getIntent().getSerializableExtra("user");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -56,8 +56,8 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
         TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-        usernameView.setText(user.getFirstname()+" "+ user.getLastname());
-        emailView.setText(user.getEmail());
+        //usernameView.setText(user.getFirstname()+" "+ user.getLastname());
+        //emailView.setText(user.getEmail());
 
 
     }
