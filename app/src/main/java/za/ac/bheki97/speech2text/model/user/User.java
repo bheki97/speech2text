@@ -12,8 +12,6 @@ public class User implements Serializable {
     private String password;
 
 
-
-
     public String getFirstname() {
         return firstname;
     }

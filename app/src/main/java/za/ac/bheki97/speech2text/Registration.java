@@ -108,10 +108,10 @@ public class Registration extends AppCompatActivity {
     }
 
     private void sendRegisterRequest(User user) {
-        userApi.registerAcc(user).enqueue(new Callback<User>() {
+        userApi.registerAcc(user).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Toast.makeText(Registration.this,"Successfully Registered!!!!",Toast.LENGTH_LONG);
+            public void onResponse(Call<String> call, Response<String> response) {
+                Toast.makeText(Registration.this,response.body(),Toast.LENGTH_SHORT).show();
                 Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
                 homeIntent.putExtra("user",user);
                 startActivity(homeIntent);
@@ -119,19 +119,17 @@ public class Registration extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(Registration.this,"Failed To Register",Toast.LENGTH_LONG);
+            public void onFailure(Call<String> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(Registration.this,t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
-    private void failedToRegister() {
-        Toast.makeText(this,"Failed To Register",Toast.LENGTH_LONG);
-    }
 
     private void openHomeActivity(User user) {
-        Toast.makeText(this,"Successfully Registered!!!!",Toast.LENGTH_LONG);
+        Toast.makeText(this,"Successfully Registered!!!!",Toast.LENGTH_LONG).show();
         Intent homeIntent = new Intent(this,HomeActivity.class);
         homeIntent.putExtra("user",user);
     }
