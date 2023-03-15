@@ -58,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
         TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
         usernameView.setText(user.getFirstname()+" "+ user.getLastname());
         emailView.setText(user.getEmail());
+
+
     }
 
     @Override
