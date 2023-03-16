@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.model.user.retrofit;
+package za.ac.bheki97.speech2text.model.retrofit;
 
 import com.google.gson.Gson;
 
@@ -16,7 +16,7 @@ public class RetrofitService {
 
     private void initializeRetrofit() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.50:8080")
+                .baseUrl("http://192.168.43.173:8080")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
 

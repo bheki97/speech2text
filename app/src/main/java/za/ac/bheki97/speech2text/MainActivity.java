@@ -16,13 +16,15 @@ import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityMainBinding;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
 import za.ac.bheki97.speech2text.model.user.AuthRequest;
-import za.ac.bheki97.speech2text.model.user.retrofit.RetrofitService;
-import za.ac.bheki97.speech2text.model.user.retrofit.UserApi;
+import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
+import za.ac.bheki97.speech2text.model.retrofit.UserApi;
+import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
 
 public class MainActivity extends AppCompatActivity {
 
     private  ActivityMainBinding binding;
     private TextView registerLink,fgrtPassword;
+    private RetrofitService retrofitService;
     private Button loginBtn;
     private UserApi userApi;
 
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        retrofitService = new RetrofitService();
+        userApi = retrofitService.getRetrofit().create(UserApi.class);
 
         //Get Email and Password Edit Text
         emailEditText = binding.emailEditText;
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addOnClickForFgtPasswordLink() {
-        Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT);
+        Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT).show();
     }
 
     private void addOnClickForLoginBtn() throws UserInputFieldException{
@@ -73,12 +78,15 @@ public class MainActivity extends AppCompatActivity {
             if(!email.isEmpty()){
                 String password = passwordEditTxt.getText().toString();
                 if(!password.isEmpty()){
-                    Toast.makeText(this,"Email Field is Empty",Toast.LENGTH_SHORT).show();
-                }else{
                     AuthRequest auth = new AuthRequest(email,password);
+                    //System.out.println(auth.getEmail()+"   "+auth.getPassword());
                     authenticateUser(auth);
+                }else{
+
+                    Toast.makeText(this,"Password Field is Empty",Toast.LENGTH_SHORT).show();
                 }
             }else{
+                System.out.println("Email: "+email);
                 Toast.makeText(this,"Email Field is Empty",Toast.LENGTH_SHORT).show();
             }
 
@@ -88,22 +96,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void authenticateUser(AuthRequest auth) {
-        userApi.loginUser(auth).enqueue(new Callback<String>() {
+
+        userApi.loginUser(auth).enqueue(new Callback<AuthUserInfo>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                startHomeActivity(response.body());
+            public void onResponse(Call<AuthUserInfo> call, Response<AuthUserInfo> response) {
+                Toast.makeText(MainActivity.this,"Logged in Successfully",Toast.LENGTH_SHORT).show();
+                //startHomeActivity(response.body());
+                System.out.println(response.body());
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<AuthUserInfo> call, Throwable t) {
+                Toast.makeText(MainActivity.this,"Server Offline",Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void startHomeActivity(String token) {
             Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-            startActivity(intent);
+            MainActivity.this.startActivity(intent);
 
 
     }

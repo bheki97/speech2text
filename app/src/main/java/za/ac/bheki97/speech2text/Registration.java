@@ -14,8 +14,8 @@ import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityRegistrationBinding;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
 import za.ac.bheki97.speech2text.model.user.User;
-import za.ac.bheki97.speech2text.model.user.retrofit.RetrofitService;
-import za.ac.bheki97.speech2text.model.user.retrofit.UserApi;
+import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
+import za.ac.bheki97.speech2text.model.retrofit.UserApi;
 
 public class Registration extends AppCompatActivity {
 
@@ -112,16 +112,16 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Toast.makeText(Registration.this,response.body(),Toast.LENGTH_SHORT).show();
-                Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
-                homeIntent.putExtra("user",user);
-                startActivity(homeIntent);
+//                Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
+//                homeIntent.putExtra("user",user);
+//                startActivity(homeIntent);
 
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(Registration.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Registration.this,"Server Offline",Toast.LENGTH_LONG).show();
             }
         });
 
