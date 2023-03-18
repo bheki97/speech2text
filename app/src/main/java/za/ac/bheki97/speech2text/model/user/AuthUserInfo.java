@@ -1,6 +1,8 @@
 package za.ac.bheki97.speech2text.model.user;
 
-public class AuthUserInfo {
+import java.io.Serializable;
+
+public class AuthUserInfo implements Serializable {
 
     private User user;
     private String jwtToken;

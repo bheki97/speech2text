@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import za.ac.bheki97.speech2text.databinding.ActivityHomeBinding;
+import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
 import za.ac.bheki97.speech2text.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
@@ -24,10 +25,12 @@ public class HomeActivity extends AppCompatActivity {
     //private User user;
     private ActivityHomeBinding binding;
 
+    private AuthUserInfo userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //user = (User) getIntent().getSerializableExtra("user");
+        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -56,8 +59,8 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
         TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-        //usernameView.setText(user.getFirstname()+" "+ user.getLastname());
-        //emailView.setText(user.getEmail());
+        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
+        emailView.setText(userInfo.getUser().getEmail());
 
 
     }

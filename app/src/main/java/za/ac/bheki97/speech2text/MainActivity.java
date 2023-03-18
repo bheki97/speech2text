@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordEditTxt.getText().toString();
                 if(!password.isEmpty()){
                     AuthRequest auth = new AuthRequest(email,password);
-                    //System.out.println(auth.getEmail()+"   "+auth.getPassword());
                     authenticateUser(auth);
                 }else{
 
@@ -101,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<AuthUserInfo> call, Response<AuthUserInfo> response) {
                 Toast.makeText(MainActivity.this,"Logged in Successfully",Toast.LENGTH_SHORT).show();
-                //startHomeActivity(response.body());
-                System.out.println(response.body());
+                startHomeActivity(response.body());
+                System.out.println(response.code());
             }
 
             @Override
@@ -113,8 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void startHomeActivity(String token) {
+    private void startHomeActivity(AuthUserInfo userInfo) {
             Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+            intent.putExtra("userInfo",userInfo);
+
             MainActivity.this.startActivity(intent);
 
 
