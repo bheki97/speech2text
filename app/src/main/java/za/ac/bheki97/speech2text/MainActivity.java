@@ -99,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
         userApi.loginUser(auth).enqueue(new Callback<AuthUserInfo>() {
             @Override
             public void onResponse(Call<AuthUserInfo> call, Response<AuthUserInfo> response) {
-                Toast.makeText(MainActivity.this,"Logged in Successfully",Toast.LENGTH_SHORT).show();
-                startHomeActivity(response.body());
-                System.out.println(response.code());
+                if(response.code()==200){
+                    startHomeActivity(response.body());
+                    System.out.println(response.code());
+                }else{
+                    Toast.makeText(MainActivity.this,"Invalid Login Details",Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

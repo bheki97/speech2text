@@ -84,19 +84,35 @@ public class Registration extends AppCompatActivity {
             throw new UserInputFieldException("Email Field is Empty");
         }
 
+
+        String id = binding.idInput.getText().toString();
+        if(id.isEmpty()){
+            throw new UserInputFieldException("The Id number Field is Empty");
+        }else{
+            if(id.length()==13){
+               // id.contains(['a','b']);
+                if(id.matches("^[0-9]+$")){
+                    user.setIdNumber(id);
+                }else{
+                    throw new UserInputFieldException("Id must Contain Digits Only");
+                }
+
+            }else{
+                throw new UserInputFieldException("Id must 13 characters Long");
+            }
+        }
+
         user.setPassword(binding.passwrdInput.getText().toString());
+        if(user.getPassword().isEmpty()){
+            throw new UserInputFieldException("Password Field is Empty");
+        }
+        user.setPassword(binding.idInput.getText().toString());
         if(user.getPassword().isEmpty()){
             throw new UserInputFieldException("Password Field is Empty");
         }
 
 
-        if(binding.femaleRadio.isChecked()){
-            user.setGender(new Character('F'));
-        }else if(binding.maleRadio.isChecked()){
-            user.setGender(new Character('M'));
-        }else{
-            throw new UserInputFieldException("No Gender is Selected");
-        }
+
 
         if(binding.contactsInput.getText().toString().isEmpty()){
             throw new UserInputFieldException("Email Field is Empty");

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private String email;
+    private String idNumber;
     private String firstname;
     private String lastname;
     private Character gender;
@@ -38,6 +39,14 @@ public class User implements Serializable {
 
     public Long getContactNo() {
         return contactNo;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 
     public void setContactNo(Long contactNo) {

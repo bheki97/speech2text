@@ -13,6 +13,7 @@
     <string name="reg_surname_hint">Enter Surname</string>
     <string name="reg_email_hint">Enter e-mail</string>
     <string name="reg_contact_hint">Enter Mobile No.</string>
+    <string name="reg_id_hint">Enter Identity Number</string>
 
 
     <string name="title_activity_main2">MainActivity2</string>
