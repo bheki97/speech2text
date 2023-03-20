@@ -9,7 +9,8 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
     private Character gender;
-    private Long contactNo;
+    private String mobileNumber;
+
     private String password;
 
 
@@ -37,8 +38,8 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public Long getContactNo() {
-        return contactNo;
+    public String getContactNo() {
+        return mobileNumber;
     }
 
     public String getIdNumber() {
@@ -49,8 +50,8 @@ public class User implements Serializable {
         this.idNumber = idNumber;
     }
 
-    public void setContactNo(Long contactNo) {
-        this.contactNo = contactNo;
+    public void setContactNo(String contactNo) {
+        this.mobileNumber = contactNo;
     }
 
     public void setEmail(String email) {

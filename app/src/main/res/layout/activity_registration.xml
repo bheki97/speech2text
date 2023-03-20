@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".MainActivity"
     >
     <TextView
@@ -141,22 +140,48 @@
             app:endIconTint="@color/carrot_orange"
 
             android:hint="@string/pass_hint"
-
-
-
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwrdInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/uppercaseTxtView"
+                android:textColor="@color/danger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must contain at least 1 Uppercase Character"/>
+            <TextView
+                android:id="@+id/lowercaseTxtView"
+                android:textColor="@color/danger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must contain at least 1 Lowercase Character"/>
+            <TextView
+                android:id="@+id/numericTxtView"
+                android:textColor="@color/danger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must contain at least 1 Numeric Value"/>
+            <TextView
+                android:id="@+id/specCharTxtView"
+                android:textColor="@color/danger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must contain at least 1 Special Character"/>
+            <TextView
+                android:id="@+id/txtLengthTxtView"
+                android:textColor="@color/danger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must be 8 Characters Long"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/registerbtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="80dp"
-            android:layout_marginVertical="20dp"
             android:background="@color/blue_zodiac"
             android:text="@string/rg"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"

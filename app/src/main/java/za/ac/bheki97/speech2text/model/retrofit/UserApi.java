@@ -10,7 +10,7 @@ import za.ac.bheki97.speech2text.model.user.User;
 public interface UserApi {
 
     @POST("/new-account")
-    Call<String> registerAcc(@Body User user);
+    Call<User> registerAcc(@Body User user);
 
     @POST("/authenticate")
     Call<AuthUserInfo> loginUser(@Body AuthRequest request);

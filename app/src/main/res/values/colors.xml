@@ -12,4 +12,6 @@
     <color name="carrot_orange">#F19113</color>
     <color name="blue_zodiac">#0D163F</color>
     <color name="my_sin">#FFAF23</color>
+    <color name="danger">#EE0000</color>
+    <color name="safe">#00CC00</color>
 </resources>

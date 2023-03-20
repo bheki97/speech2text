@@ -2,11 +2,22 @@ package za.ac.bheki97.speech2text;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,9 +32,13 @@ public class Registration extends AppCompatActivity {
 
     private ActivityRegistrationBinding binding;
     private RetrofitService retrofitService;
+    private boolean isPasswordValid = false;
     private UserApi userApi;
     private Button registerButton;
-    private TextView loginLink;
+    private TextView loginLink,valSpecChar,valLowercase,valUppercase,valNumeric,valCharLength;
+    private TextInputEditText passwordEditText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +54,84 @@ public class Registration extends AppCompatActivity {
         loginLink  = binding.loginLink;
         addOnClickListenerForLoginLink();
 
+        //Configure Password Edit Text
+        passwordEditText = binding.passwrdInput;
+        valLowercase = binding.lowercaseTxtView;
+        valSpecChar = binding.specCharTxtView;
+        valUppercase = binding.uppercaseTxtView;
+        valNumeric = binding.numericTxtView;
+        valCharLength = binding.txtLengthTxtView;
+        addOnChangeListenerForPasswordEditText();
+
+
         retrofitService = new RetrofitService();
         userApi = retrofitService.getRetrofit().create(UserApi.class);
 
+
+    }
+
+    private void addOnChangeListenerForPasswordEditText() {
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               String data = s.toString();
+                if(data.matches(".*[0-9].*")){
+                  valNumeric.setTextColor(Color.GREEN);
+                  isPasswordValid = true;
+               }else{
+                   valNumeric.setTextColor(Color.RED);
+                    isPasswordValid = false;
+               }
+
+                //check if at least contains one Lowercase
+                if(data.matches(".*[a-z].*")){
+                    valLowercase.setTextColor(Color.GREEN);
+                    isPasswordValid = true;
+                }else{
+                    valLowercase.setTextColor(Color.RED);
+                    isPasswordValid = false;
+                }
+
+                //check if at least contains one Uppercase
+                if(data.matches(".*[A-Z].*")){
+                    System.out.println("Uppercase Added");
+                    valUppercase.setTextColor(Color.GREEN);
+                    isPasswordValid = true;
+                }else{
+                    System.out.println("Uppercase Removed");
+                    valUppercase.setTextColor(Color.RED);
+                    isPasswordValid = false;
+                }
+
+                //check if at least contains one Special Character
+                if(data.matches(".*[^a-zA-Z0-9].*")){
+                    valSpecChar.setTextColor(Color.GREEN);
+                    isPasswordValid = true;
+                }else{
+                    valSpecChar.setTextColor(Color.RED);
+                    isPasswordValid = false;
+                }
+
+                //check if at least contains one Special Character
+                if(data.length()>8){
+                    valCharLength.setTextColor(Color.GREEN);
+                    isPasswordValid = true;
+                }else{
+                    valCharLength.setTextColor(Color.RED);
+                    isPasswordValid = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -85,14 +175,22 @@ public class Registration extends AppCompatActivity {
         }
 
 
-        String id = binding.idInput.getText().toString();
-        if(id.isEmpty()){
+        String data = binding.idInput.getText().toString();
+        if(data.isEmpty()){
             throw new UserInputFieldException("The Id number Field is Empty");
         }else{
-            if(id.length()==13){
-               // id.contains(['a','b']);
-                if(id.matches("^[0-9]+$")){
-                    user.setIdNumber(id);
+            if(data.length()==13){
+               // data.contains(['a','b']);
+                if(data.matches("^[0-9]+$")){
+                    user.setIdNumber(data);
+                    data = data.substring(6,10);
+
+                    if(Integer.parseInt(data)<5000){
+                        user.setGender('F');
+                    }else{
+                        user.setGender('M');
+                    }
+
                 }else{
                     throw new UserInputFieldException("Id must Contain Digits Only");
                 }
@@ -102,13 +200,28 @@ public class Registration extends AppCompatActivity {
             }
         }
 
-        user.setPassword(binding.passwrdInput.getText().toString());
-        if(user.getPassword().isEmpty()){
-            throw new UserInputFieldException("Password Field is Empty");
+        data = binding.contactsInput.getText().toString();
+        if(data.isEmpty()){
+            throw new UserInputFieldException("Mobile Number Field is Empty");
+        }else{
+            if(data.matches("^[0-9]+$")){
+               //data.matches("^[0-9]+$")
+                if(data.length()==10){
+                    user.setContactNo(data);
+
+                }else{
+                    throw new UserInputFieldException("Mobile Number Must Be 10 digits");
+                }
+            }else{
+                throw new UserInputFieldException("Mobile Number Must Contain digits only");
+            }
         }
-        user.setPassword(binding.idInput.getText().toString());
-        if(user.getPassword().isEmpty()){
-            throw new UserInputFieldException("Password Field is Empty");
+
+
+        if(isPasswordValid){
+            user.setPassword(binding.passwrdInput.getText().toString());
+        }else{
+            throw new UserInputFieldException("Enter Valid Password");
         }
 
 
@@ -117,27 +230,35 @@ public class Registration extends AppCompatActivity {
         if(binding.contactsInput.getText().toString().isEmpty()){
             throw new UserInputFieldException("Email Field is Empty");
         }else{
-            user.setContactNo(new Long(binding.contactsInput.getText().toString()));
+            //user.setContactNo(new Long(binding.contactsInput.getText().toString()));
         }
 
         return user;
     }
 
     private void sendRegisterRequest(User user) {
-        userApi.registerAcc(user).enqueue(new Callback<String>() {
+        userApi.registerAcc(user).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Toast.makeText(Registration.this,response.body(),Toast.LENGTH_SHORT).show();
-//                Intent homeIntent = new Intent(Registration.this,HomeActivity.class);
-//                homeIntent.putExtra("user",user);
-//                startActivity(homeIntent);
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                if(response.code()==200){
+                    Toast.makeText(Registration.this,"User Registered",Toast.LENGTH_SHORT).show();
+
+                }else{
+                    try {
+                        Toast.makeText(Registration.this,response.errorBody().string(),Toast.LENGTH_LONG).show();
+                    }catch (IOException e){
+                        Toast.makeText(Registration.this,"Unkown Error",Toast.LENGTH_SHORT).show();
+                    }
+                }
+//
 
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(Registration.this,"Server Offline",Toast.LENGTH_LONG).show();
+            public void onFailure(Call<User> call, Throwable t) {
+                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE,t.toString(), t);
+                //Toast.makeText(Registration.this,"Server Offline",Toast.LENGTH_LONG).show();
             }
         });
 
