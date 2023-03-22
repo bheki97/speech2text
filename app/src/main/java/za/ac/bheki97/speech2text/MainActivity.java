@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addOnClickForFgtPasswordLink() {
-        Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT).show();
+        binding.fgrtPasswordLink.setOnClickListener(view ->{
+            Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void addOnClickForLoginBtn() throws UserInputFieldException{

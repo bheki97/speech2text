@@ -1,13 +1,18 @@
 package za.ac.bheki97.speech2text;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -56,12 +61,41 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //configure Logout Button
+        setLogoutListener(navigationView.getMenu().findItem(R.id.nav_logout));
+
+
+        //Configure ViewProfile
+        startViewProfileIntent((ImageView) binding.navView.getHeaderView(0).findViewById(
+                R.id.profileImageView));
 
         TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
         TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
         usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
         emailView.setText(userInfo.getUser().getEmail());
 
+
+    }
+
+    private void startViewProfileIntent(ImageView viewById) {
+        viewById.setOnClickListener(view ->
+        {
+
+            Intent intent = new Intent(HomeActivity.this,ProfileActivity.class);
+            intent.putExtra("userInfo",userInfo);
+            startActivity(intent);
+        });
+    }
+
+    private void setLogoutListener(MenuItem item) {
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                finish();
+
+                return false;
+            }
+        });
 
     }
 

@@ -1,8 +1,10 @@
 package za.ac.bheki97.speech2text;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
@@ -169,10 +172,7 @@ public class Registration extends AppCompatActivity {
         if(user.getLastname().isEmpty()){
             throw new UserInputFieldException("Last Name Field is Empty");
         }
-        user.setEmail(binding.emailInput.getText().toString());
-        if(user.getEmail().isEmpty()){
-            throw new UserInputFieldException("Email Field is Empty");
-        }
+
 
 
         String data = binding.idInput.getText().toString();
@@ -197,6 +197,18 @@ public class Registration extends AppCompatActivity {
 
             }else{
                 throw new UserInputFieldException("Id must 13 characters Long");
+            }
+        }
+
+        data = binding.emailInput.getText().toString();
+        if(data.isEmpty()){
+            throw new UserInputFieldException("Email Field is Empty");
+        }else{
+
+            if(data.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")){
+                user.setEmail(data);
+            }else{
+                throw new UserInputFieldException("Invalid email Format");
             }
         }
 
@@ -243,10 +255,30 @@ public class Registration extends AppCompatActivity {
 
                 if(response.code()==200){
                     Toast.makeText(Registration.this,"User Registered",Toast.LENGTH_SHORT).show();
-
+                    String msg = "Congratulations " +response.body().getFirstname()+"!!!You Have " +
+                            "Successfully Registered on the Prita App";
+                    MaterialAlertDialogBuilder builder =  setBuilder("Registration Success",msg)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Registration.this,MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }else{
                     try {
-                        Toast.makeText(Registration.this,response.errorBody().string(),Toast.LENGTH_LONG).show();
+                        String msg = response.errorBody().string();
+                        MaterialAlertDialogBuilder builder = setBuilder("Registration Success",msg)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }catch (IOException e){
                         Toast.makeText(Registration.this,"Unkown Error",Toast.LENGTH_SHORT).show();
                     }
@@ -261,6 +293,16 @@ public class Registration extends AppCompatActivity {
                 //Toast.makeText(Registration.this,"Server Offline",Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private MaterialAlertDialogBuilder setBuilder(String title, String msg) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Registration.this);
+        builder.setTitle(title)
+                .setMessage(msg);
+
+
+        return builder;
 
     }
 
