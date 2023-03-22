@@ -16,11 +16,11 @@ public interface UserApi {
     @POST("/account")
     Call<User> registerAcc(@Body User user);
 
-    @PUT("/account")
+    @PUT("/account/update")
     Call<User> updateProfile(@Header("Authorization") String jwtToken, @Body User user);
 
     @DELETE("/account/{id}")
-    Call<User> deleteAcc(@Header("Authorization") String jwtToken, @Path("id")String id);
+    Call<String> deleteAcc(@Header("Authorization") String jwtToken, @Path("id")String id);
 
     @POST("/authenticate")
     Call<AuthUserInfo> loginUser(@Body AuthRequest request);
