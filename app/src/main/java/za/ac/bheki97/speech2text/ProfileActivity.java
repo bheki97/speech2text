@@ -1,16 +1,28 @@
 package za.ac.bheki97.speech2text;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityProfileBinding;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
+import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
+import za.ac.bheki97.speech2text.model.retrofit.UserApi;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
 import za.ac.bheki97.speech2text.model.user.User;
 
@@ -20,6 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
     private AuthUserInfo userInfo;
     private TextView passwrdReset;
     private User user;
+
+    private UserApi retrofitApi;
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +47,13 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        retrofitService = new RetrofitService();
+        retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
+
 
 
         //initial User to the Edit Text
-        initialsEditText();
+        updateEditText();
 
         //Configure Edit Text for changes
         makeChangesBtn = binding.makeChangeBtn;
@@ -80,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.emailEditText.setEnabled(false);
                 binding.mobileNumEditTxt.setEnabled(false);
                 binding.updateAccBtn.setEnabled(false);
-                initialsEditText();
+                updateEditText();
 
             }else{
                 binding.firstnameInput.setEnabled(true);
@@ -93,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void initialsEditText() {
+    private void updateEditText() {
         binding.firstnameInput.setText(user.getFirstname());
         binding.lastnameInput.setText(user.getLastname());
         binding.idInput.setText(user.getIdNumber());
@@ -107,6 +125,8 @@ public class ProfileActivity extends AppCompatActivity {
 
             try{
                 editUserObjUsingInputFields();
+                setConfirmUpdate();
+
 
             }catch (NumberFormatException numExc){
                 Toast.makeText(this,"Mobile Number Invalid",Toast.LENGTH_SHORT).show();
@@ -117,6 +137,70 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
     }
+
+    private void setConfirmUpdate() {
+
+        MaterialAlertDialogBuilder builder =  new MaterialAlertDialogBuilder(ProfileActivity.this)
+                .setTitle("Confirm")
+                .setMessage("Are you sure you want to update the account?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateAcc();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void updateAcc() {
+        retrofitApi.updateProfile("Bearer "+userInfo.getJwtToken(),user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                String msg;
+                if(response.code()==200){
+                    user = response.body();
+                    updateEditText();
+                    msg = user.getFirstname()+" your account has been Successfully";
+
+                }else {
+                    try{
+                        msg = response.errorBody().string();
+                    }catch (IOException exc){
+                        msg = "Error Occurred";
+                    }
+                }
+
+                displayUpdateMessage(msg);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displayUpdateMessage(String msg) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ProfileActivity.this);
+        builder.setTitle("Success Message")
+                .setMessage(msg)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+    }
+
 
     private void editUserObjUsingInputFields() throws UserInputFieldException,NumberFormatException{
 
