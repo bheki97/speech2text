@@ -28,9 +28,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     //private User user;
-    private ActivityHomeBinding binding;
+    private static ActivityHomeBinding binding;
 
-    private AuthUserInfo userInfo;
+    private static AuthUserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,4 +112,14 @@ public class HomeActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public static void updateUserInfo(AuthUserInfo userInfo){
+        HomeActivity.userInfo = userInfo;
+        ((TextView)binding.navView.getHeaderView(0).findViewById(R.id.username))
+                .setText(userInfo.getUser().getFirstname()+" "+userInfo.getUser());
+        ((TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView))
+                .setText(userInfo.getUser().getEmail());
+        binding.navView.invalidate();
+    }
+
 }
