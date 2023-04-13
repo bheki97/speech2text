@@ -24,11 +24,22 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_scan">Scan QR Code</string>
+    <string name="menu_home">Translate</string>
+    <string name="menu_join">Join Event</string>
     <string name="menu_my_events">My Events</string>
     <string name="menu_upcoming_events">Upcoming Events</string>
     <string name="menu_logout">Logout</string>
     <string name="title_activity_home">HomeActivity</string>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Afrikaans</item>
+        <item>Zulu</item>
+        <item>Sotho</item>
+        <item>Tsonga</item>
+    </string-array>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

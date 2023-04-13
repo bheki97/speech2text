@@ -1,6 +1,8 @@
 package za.ac.bheki97.speech2text;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,19 +29,25 @@ import za.ac.bheki97.speech2text.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static AuthUserInfo userInfo;
+    private static boolean audioRecordingPermissionGranted;
+
     private AppBarConfiguration mAppBarConfiguration;
     //private User user;
     private static ActivityHomeBinding binding;
 
-    private static AuthUserInfo userInfo;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
+//        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
 
         setSupportActionBar(binding.appBarHome.toolbar);
@@ -53,8 +62,8 @@ public class HomeActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_my_events,R.id.nav_home, R.id.nav_slideshow)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home,
+                 R.id.nav_my_events, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
@@ -69,10 +78,10 @@ public class HomeActivity extends AppCompatActivity {
         startViewProfileIntent((ImageView) binding.navView.getHeaderView(0).findViewById(
                 R.id.profileImageView));
 
-        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
-        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
-        emailView.setText(userInfo.getUser().getEmail());
+//        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+//        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
+//        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
+//        emailView.setText(userInfo.getUser().getEmail());
 
 
     }
@@ -120,6 +129,25 @@ public class HomeActivity extends AppCompatActivity {
         ((TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView))
                 .setText(userInfo.getUser().getEmail());
         binding.navView.invalidate();
+    }
+    public static boolean isAudioRecordingPermissionGranted() {
+        return audioRecordingPermissionGranted;
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                audioRecordingPermissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+
+        if (!audioRecordingPermissionGranted) {
+
+        }
     }
 
 }
