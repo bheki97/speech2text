@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
+        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -78,10 +78,10 @@ public class HomeActivity extends AppCompatActivity {
         startViewProfileIntent((ImageView) binding.navView.getHeaderView(0).findViewById(
                 R.id.profileImageView));
 
-//        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
-//        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-//        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
-//        emailView.setText(userInfo.getUser().getEmail());
+        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
+        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
+        emailView.setText(userInfo.getUser().getEmail());
 
 
     }
@@ -124,10 +124,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public static void updateUserInfo(AuthUserInfo userInfo){
         HomeActivity.userInfo = userInfo;
-        ((TextView)binding.navView.getHeaderView(0).findViewById(R.id.username))
-                .setText(userInfo.getUser().getFirstname()+" "+userInfo.getUser());
-        ((TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView))
-                .setText(userInfo.getUser().getEmail());
+        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
+        usernameView.setText(userInfo.getUser().getFirstname()+" "+ HomeActivity.userInfo.getUser().getLastname());
+        emailView.setText(HomeActivity.userInfo.getUser().getEmail());
         binding.navView.invalidate();
     }
     public static boolean isAudioRecordingPermissionGranted() {
@@ -148,6 +148,10 @@ public class HomeActivity extends AppCompatActivity {
         if (!audioRecordingPermissionGranted) {
 
         }
+    }
+
+    public static AuthUserInfo getUserInfo(){
+        return userInfo;
     }
 
 }

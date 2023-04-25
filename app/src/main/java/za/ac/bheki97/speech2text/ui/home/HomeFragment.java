@@ -1,6 +1,5 @@
 package za.ac.bheki97.speech2text.ui.home;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
@@ -12,22 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -35,26 +33,24 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.HomeActivity;
-import za.ac.bheki97.speech2text.MainActivity;
-import za.ac.bheki97.speech2text.ProfileActivity;
 import za.ac.bheki97.speech2text.R;
 import za.ac.bheki97.speech2text.databinding.FragmentHomeBinding;
+import za.ac.bheki97.speech2text.exception.SpeakTextException;
 import za.ac.bheki97.speech2text.exception.TranslationException;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
 import za.ac.bheki97.speech2text.model.translation.TranslationDto;
-import za.ac.bheki97.speech2text.service.GoogleService;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private RetrofitService retrofitService;
     private UserApi api;
+    private byte[] audioData;
 
     private String transLang;
     private String originLang ="English";
@@ -94,40 +90,123 @@ public class HomeFragment extends Fragment {
         setTranslateBtnOnclickListener();
         setSpeakBtnOnClickListener();
 
+        //TranslateToAudio();
+
 
 //        final TextView textView = binding.textHome;
 //        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
+    private void validateSpeakerData() throws SpeakTextException {
+        if(binding.tanslatedTextView.getText().toString().isEmpty()){
+            throw new SpeakTextException("Please Convert Text before Translating");
+        }
+
+        if(transLang==null){
+            throw new SpeakTextException("Choose Your Preferred language of translation\n" +
+                    "N.B only English are Supported for Audio conversion");
+        }
+    }
+
     private void setSpeakBtnOnClickListener() {
         binding.transSpeakerBtn.setOnClickListener(v ->{
 
+            try{
+
+                validateSpeakerData();
+                System.out.println(transLang);
+                transLang = changeToLangCode(transLang);
+                if(transLang.equalsIgnoreCase("af-ZA")||
+                        transLang.equalsIgnoreCase("en-US")){
+
+                    getAudioFromServer();
+
+                }else{
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+                    builder.setTitle("Info Message")
+                            .setMessage("Sorry to inform you Now that Prita only Support Afrikaans and English." +
+                                    "Updates will be made soon. Thank you, Enjoy using the App")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
 
 
-            if(transLang.equalsIgnoreCase("af-ZA")||
-                    transLang.equalsIgnoreCase("en-US")){
-                speak();
+            }catch (SpeakTextException e){
+                Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_LONG).show();
+            }
 
-            }else{
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
-                builder.setTitle("Info Message")
-                        .setMessage("Sorry to inform you Now that Prita only Support Afrikaans and English." +
-                                "Updates will be made soon. Thank you, Enjoy using the App")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+
+
+        });
+
+    }
+
+    public void TranslateToAudio(){
+        binding.transSpeakerBtn.setOnClickListener(v ->{
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+            builder.setTitle("Info Message")
+                    .setMessage("Sorry to inform you Now that Prita only Support Afrikaans and English." +
+                            "Updates will be made soon. Thank you, Enjoy using the App")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.create().show();
+
+        });
+    }
+
+    private void getAudioFromServer() {
+        api.getSpeechFromText(transLang,binding.tanslatedTextView.getText().toString()).enqueue(
+                new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.code()==200){
+                        try {
+                            speak(response.body().bytes());
+                            Toast.makeText(getActivity(),"Listen.....",Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            Toast.makeText(getActivity(),"Bad Response",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else if(response.code()==403){
+                        Toast.makeText(getActivity(),"Access Denied",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(),"Bad Request",Toast.LENGTH_SHORT).show();
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getActivity(),"Audio Request Failed",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void speak() {
+    private void speak(byte[] bytes) throws IOException {
+        File tempFile = File.createTempFile("audio", "temp");
+        tempFile.deleteOnExit();
+        System.out.println(Arrays.toString(bytes));
+        // Write the byte array to the temporary file
+        FileOutputStream fos = new FileOutputStream(tempFile);
+        fos.write(bytes);
+        fos.close();
 
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setDataSource(tempFile.getAbsolutePath());
+        mediaPlayer.prepare();
+        mediaPlayer.start();
     }
+
 
     private void setTranslateBtnOnclickListener() {
         binding.translateBtn.setOnClickListener(v->{
@@ -165,16 +244,16 @@ public class HomeFragment extends Fragment {
 
     private void translate() {
 
-
         api.translate(new TranslationDto(binding.editTextInitial.getText().toString(),changeToLangCode(originLang),changeToLangCode(transLang))).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            @Override public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.code()==200){
                     try {
                         if(response.body()!=null){
                             binding.tanslatedTextView.setText(response.body().string());
                         }else{
+
                             Toast.makeText(getActivity(),"Server Responded With a Null Value",Toast.LENGTH_SHORT).show();
+
                         }
 
                     } catch (IOException e) {
@@ -285,7 +364,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    binding.editTextInitial.setText(response.body().string());
+
+                    if(response.code()==200){
+                        binding.editTextInitial.setText(response.body().string());
+                    }else if(response.code()==403){
+                        Toast.makeText(getActivity(),"Access Denied",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(),"Bad Request",Toast.LENGTH_SHORT).show();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

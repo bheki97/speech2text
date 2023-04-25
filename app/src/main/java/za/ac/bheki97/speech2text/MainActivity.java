@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
                     startHomeActivity(response.body());
                     System.out.println(response.code());
                 }else{
+
+                    try {
+                        System.out.println("\n\nResponse Code: "+response.code());
+                        System.out.println("\n\nResponse Error: "+response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(MainActivity.this,"Invalid Login Details",Toast.LENGTH_SHORT).show();
                 }
             }

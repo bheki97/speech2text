@@ -160,13 +160,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateAcc() {
-        retrofitApi.updateProfile("Bearer "+userInfo.getJwtToken(),user).enqueue(new Callback<User>() {
+        retrofitApi.updateProfile("Bearer "+userInfo.getJwtToken(),user).enqueue(new Callback<AuthUserInfo>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<AuthUserInfo> call, Response<AuthUserInfo> response) {
                 String msg;
                 if(response.code()==200){
-                    user = response.body();
+
+                    userInfo = response.body();
+                    user = userInfo.getUser();
                     updateEditText();
+                    HomeActivity.updateUserInfo(userInfo);
                     msg = user.getFirstname()+" your account has been Successfully";
 
                 }else {
@@ -181,8 +184,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
+            public void onFailure(Call<AuthUserInfo> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,6 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
+        builder.create().show();
 
     }
 

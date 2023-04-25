@@ -24,7 +24,7 @@ public interface UserApi {
     Call<User> registerAcc(@Body User user);
 
     @PUT("/account/update")
-    Call<User> updateProfile(@Header("Authorization") String jwtToken, @Body User user);
+    Call<AuthUserInfo> updateProfile(@Header("Authorization") String jwtToken, @Body User user);
 
     @DELETE("/account/{id}")
     Call<String> deleteAcc(@Header("Authorization") String jwtToken, @Path("id")String id);
@@ -35,7 +35,7 @@ public interface UserApi {
     @POST("/speech/translate")
     Call<ResponseBody> translate(@Body TranslationDto dto);
 
-    @GET("/speech/speak/{lang}/{text}")
+    @GET("/speech/{lang}/{text}")
     Call<ResponseBody> getSpeechFromText(@Path("lang") String lang,@Path("text")String text);
 
     @Multipart
