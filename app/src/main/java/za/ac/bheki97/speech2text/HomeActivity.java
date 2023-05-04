@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
+        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -83,10 +83,10 @@ public class HomeActivity extends AppCompatActivity {
         startViewProfileIntent((ImageView) binding.navView.getHeaderView(0).findViewById(
                 R.id.profileImageView));
 
-//        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
-//        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-//        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
-//        emailView.setText(userInfo.getUser().getEmail());
+        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
+        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
+        emailView.setText(userInfo.getUser().getEmail());
 
 
     }
@@ -121,15 +121,18 @@ public class HomeActivity extends AppCompatActivity {
                 if(result.getContents() !=null) {
                     //openMainActivity(result.getContents());
 
-//                    AlertDialog.Builder builder = new  AlertDialog.Builder( EventActivity.this);
-//                    builder.setTitle("Results");
-//                    builder.setMessage(result.getContents());
-//                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    }).show();
+                    AlertDialog.Builder builder = new  AlertDialog.Builder( HomeActivity.this);
+                    builder.setTitle("Results");
+                    builder.setMessage("Invalid Event Code.\nReason might be that the Functionality " +
+                            "is not yet implemented");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.create().show();
                 }
             });
 

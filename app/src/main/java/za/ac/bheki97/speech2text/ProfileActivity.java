@@ -60,8 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         enableEditTextForChanges();
 
         //Configure Password Reset Text View
-        passwrdReset = binding.passwrdReset;
-        setOnclickListenerForPasswrdRest();
+        //passwrdReset = binding.passwrdReset;
+        //setOnclickListenerForPasswrdRest();
 
         //Configure Delete Account Button
         delAccBtn = binding.delAccBtn;
@@ -79,16 +79,37 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setOnclickListenerForDelAccBtn() {
         delAccBtn.setOnClickListener(view ->{
-            Toast.makeText(this,"Functionality Not Yet Implemented!!!",Toast.LENGTH_LONG).show();
+            retrofitApi.deleteAcc(HomeActivity.getUserInfo().getJwtToken(),
+                    HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.code()==200){
+                        Toast.makeText(ProfileActivity.this,"Account Deleted successfully",Toast.LENGTH_LONG).show();
+                        //HomeActivity.updateUserInfo(null);
+
+                        finishAffinity();
+                        return;
+                    }
+                    Toast.makeText(ProfileActivity.this,"Server error",Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(ProfileActivity.this,"Request Failed",Toast.LENGTH_LONG).show();
+                }
+            });
+
+
+            //Toast.makeText(this,"Functionality Not Yet Implemented!!!",Toast.LENGTH_LONG).show();
         });
     }
 
-    private void setOnclickListenerForPasswrdRest() {
-        passwrdReset.setOnClickListener(view ->{
-            Toast.makeText(this,"Functionality Not Yet Implemented!!!",Toast.LENGTH_LONG).show();
-        });
-
-    }
+//    private void setOnclickListenerForPasswrdRest() {
+//        passwrdReset.setOnClickListener(view ->{
+//            Toast.makeText(this,"Functionality Not Yet Implemented!!!",Toast.LENGTH_LONG).show();
+//        });
+//
+//    }
 
     private void enableEditTextForChanges() {
         makeChangesBtn.setOnClickListener(view ->{

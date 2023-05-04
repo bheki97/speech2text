@@ -73,14 +73,14 @@
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/fgrtPasswordLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/frgt_pass"
+<!--            <TextView-->
+<!--                android:id="@+id/fgrtPasswordLink"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/frgt_pass"-->
 
-                android:gravity="end"
-                android:textColor="@color/blue_pin"/>
+<!--                android:gravity="end"-->
+<!--                android:textColor="@color/blue_pin"/>-->
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

@@ -119,14 +119,14 @@
     </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/passwrdReset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Password Reset"
-        android:textColor="@color/blue_pin"
-        android:gravity="center"
-        android:layout_margin="25dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/passwrdReset"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Password Reset"-->
+<!--        android:textColor="@color/blue_pin"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_margin="25dp"/>-->
     <Button
         android:id="@+id/delAccBtn"
         android:layout_width="match_parent"

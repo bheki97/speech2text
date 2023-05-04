@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Configure Forgot Password Link
-        fgrtPassword = binding.fgrtPasswordLink;
-        addOnClickForFgtPasswordLink();
+       // fgrtPassword = binding.fgrtPasswordLink;
+       // addOnClickForFgtPasswordLink();
 
 
 
@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void addOnClickForFgtPasswordLink() {
-        binding.fgrtPasswordLink.setOnClickListener(view ->{
-            Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT).show();
-        });
-    }
+//    private void addOnClickForFgtPasswordLink() {
+//        binding.fgrtPasswordLink.setOnClickListener(view ->{
+//            Toast.makeText(MainActivity.this,"Function Not Yet Available",Toast.LENGTH_SHORT).show();
+//        });
+//    }
 
     private void addOnClickForLoginBtn() throws UserInputFieldException{
         loginBtn.setOnClickListener(view -> {

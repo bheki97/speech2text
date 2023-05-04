@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import za.ac.bheki97.speech2text.databinding.FragmentSlideshowBinding;
+import za.ac.bheki97.speech2text.databinding.FragmentJoinedEventsBinding;
 
 public class JoinedEventsFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentJoinedEventsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         JoinedEventsViewModel joinedEventsViewModel =
                 new ViewModelProvider(this).get(JoinedEventsViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentJoinedEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;
