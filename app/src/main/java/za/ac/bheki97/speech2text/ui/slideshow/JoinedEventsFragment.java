@@ -12,20 +12,20 @@ import androidx.lifecycle.ViewModelProvider;
 
 import za.ac.bheki97.speech2text.databinding.FragmentSlideshowBinding;
 
-public class SlideshowFragment extends Fragment {
+public class JoinedEventsFragment extends Fragment {
 
     private FragmentSlideshowBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        JoinedEventsViewModel joinedEventsViewModel =
+                new ViewModelProvider(this).get(JoinedEventsViewModel.class);
 
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        joinedEventsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

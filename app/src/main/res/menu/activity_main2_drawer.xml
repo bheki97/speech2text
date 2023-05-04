@@ -15,10 +15,10 @@
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_upcoming_events" />
+            android:title="@string/menu_joined_events" />
         <item
             android:id="@+id/nav_slideshow2"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_upcoming_events" />
+            android:title="@string/menu_joined_events" />
     </group>
 </menu>

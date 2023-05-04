@@ -39,14 +39,20 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".CaptureAct"
+            android:exported="false"/>
         <activity
             android:name=".HomeActivity"
             android:clearTaskOnLaunch="true"
-            android:exported="false"
+            android:exported="true"
             android:label="Prita"
             android:theme="@style/Theme.Speech2text.NoActionBar">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -68,16 +74,12 @@
         <activity
             android:name=".MainActivity"
             android:clearTaskOnLaunch="true"
-            android:exported="true"
+            android:exported="false"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
             android:noHistory="true">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"

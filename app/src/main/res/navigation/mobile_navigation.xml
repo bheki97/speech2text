@@ -10,11 +10,6 @@
         android:name="za.ac.bheki97.speech2text.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/nav_join"
-        android:name="za.ac.bheki97.speech2text.ui.join_group.JoinEvent"
-        tools:layout="@layout/fragment_join_event"
-        android:label="@string/menu_join" />
 
 
     <fragment
@@ -26,7 +21,7 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="za.ac.bheki97.speech2text.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_upcoming_events"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="za.ac.bheki97.speech2text.ui.slideshow.JoinedEventsFragment"
+        android:label="@string/menu_joined_events"
+        tools:layout="@layout/fragment_joined_events" />
 </navigation>

@@ -1,6 +1,7 @@
 package za.ac.bheki97.speech2text;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.Image;
@@ -11,10 +12,15 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -42,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
+        //userInfo = (AuthUserInfo) getIntent().getSerializableExtra("userInfo");
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -54,8 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openJoinCreateEventDialog();
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -78,11 +83,69 @@ public class HomeActivity extends AppCompatActivity {
         startViewProfileIntent((ImageView) binding.navView.getHeaderView(0).findViewById(
                 R.id.profileImageView));
 
-        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
-        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
-        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
-        emailView.setText(userInfo.getUser().getEmail());
+//        TextView usernameView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.username);
+//        TextView emailView = (TextView)binding.navView.getHeaderView(0).findViewById(R.id.emailView);
+//        usernameView.setText(userInfo.getUser().getFirstname()+" "+ userInfo.getUser().getLastname());
+//        emailView.setText(userInfo.getUser().getEmail());
 
+
+    }
+
+    private void openJoinCreateEventDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(HomeActivity.this);
+
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you want to Join or Create New Event?");
+        builder.setPositiveButton("Join Event", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                startJoinEventActivty();
+            }
+        });
+
+        builder.setNegativeButton("Create Event", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                startCreateEventActivty();
+            }
+        });
+
+          builder.create().show();
+    }
+
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+
+                if(result.getContents() !=null) {
+                    //openMainActivity(result.getContents());
+
+//                    AlertDialog.Builder builder = new  AlertDialog.Builder( EventActivity.this);
+//                    builder.setTitle("Results");
+//                    builder.setMessage(result.getContents());
+//                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    }).show();
+                }
+            });
+
+    private void startCreateEventActivty() {
+        startActivity(new Intent(HomeActivity.this,CreateEventActivity.class));
+
+    }
+
+    private void startJoinEventActivty() {
+        ScanOptions options = new ScanOptions();
+
+        options.setPrompt("Volume up to flash");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
 
     }
 
