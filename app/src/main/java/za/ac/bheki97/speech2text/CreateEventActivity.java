@@ -10,16 +10,33 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityCreateEventBinding;
+import za.ac.bheki97.speech2text.exception.EventException;
+import za.ac.bheki97.speech2text.model.event.Event;
+import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
+import za.ac.bheki97.speech2text.model.retrofit.UserApi;
+import za.ac.bheki97.speech2text.model.user.Host;
 
 public class CreateEventActivity extends AppCompatActivity {
 
-    ActivityCreateEventBinding binding;
+    private ActivityCreateEventBinding binding;
+    private LocalDateTime date;
+
+
+    private UserApi retrofitApi;
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +45,80 @@ public class CreateEventActivity extends AppCompatActivity {
         binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
+        retrofitService = new RetrofitService();
+        retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
+        date =null;
+
+        //setOnclickListener For the Create Event Button
+        OnClickListenerForCreateEventBtn();
     }
 
+    private void OnClickListenerForCreateEventBtn() {
+        binding.createEventBtn.setOnClickListener(v ->{
+
+            try {
+
+                validateEventValues();
+
+            } catch (EventException e) {
+                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Event event = new Event();
+            String name = binding.nameOfEvent.getText().toString();
+            String description = binding.nameOfEvent.getText().toString();
+
+            event.setEventKey(name+"##"+description+"##"+name+"##"+description+"##"+name+"##"+description);
+            event.setDescription(description);
+            event.setOccasion(name);
+            event.setHost(new Host(HomeActivity.getUserInfo().getUser(),binding.nameOfEvent.getText().toString()));
+            event.setDate(date.toString());
+
+            retrofitApi.hostEvent(HomeActivity.getUserInfo().getJwtToken(),event).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.code()==200){
+                        Toast.makeText(CreateEventActivity.this,"Event Created",Toast.LENGTH_SHORT).show();
+                    }else{
+                        try {
+                            Toast.makeText(CreateEventActivity.this,response.errorBody().string(),Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            Toast.makeText(CreateEventActivity.this,"Error Occurred",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+            });
+
+
+        });
+    }
+
+    private void validateEventValues() throws EventException {
+        if(binding.nameOfEvent.getText().toString().isEmpty())
+            throw new EventException("Event name cannot be empty!!!");
+
+        if(binding.descriptionOfEvent.getText().toString().isEmpty())
+            throw new EventException("Event Description cannot be empty cannot be empty!!!");
+
+        if(binding.brand.getText().toString().isEmpty())
+            throw new EventException("Your Host cannot be empty cannot be empty!!!");
+
+        if(binding.descriptionOfEvent.getText().toString()
+                .equalsIgnoreCase(binding.nameOfEvent.getText().toString()))
+            throw new EventException("Brand must be at least different to the Occasion");
+
+//        if(binding.descriptionOfEvent.getText().toString().split(".").length<3 ?
+//            binding.descriptionOfEvent.getText().toString().split("\n").length<3:
+//            binding.descriptionOfEvent.getText().toString().split(" ").length<20)
+//            throw new EventException("Please give a more descriptive \nDescription with at least 3 sentences");
+
+
+    }
 
 
     public void showDateTimePicker(View view) {
@@ -51,6 +140,7 @@ public class CreateEventActivity extends AppCompatActivity {
                         calendar.set(Calendar.DAY_OF_MONTH, day);
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
                         calendar.set(Calendar.MINUTE, minute);
+                        date = LocalDateTime.of(year,month,day,hour,minute);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         ((TextInputEditText) view).setText(sdf.format(calendar.getTime()));
                     }

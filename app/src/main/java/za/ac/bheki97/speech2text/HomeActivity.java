@@ -29,7 +29,10 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import za.ac.bheki97.speech2text.databinding.ActivityHomeBinding;
+import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
 import za.ac.bheki97.speech2text.model.user.User;
 
@@ -44,6 +47,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final String[] permissions = {Manifest.permission.RECORD_AUDIO};
+
+    private static List<Event> myEvents = null;
+    private static List<Event> joinedEvents =null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +220,22 @@ public class HomeActivity extends AppCompatActivity {
         if (!audioRecordingPermissionGranted) {
 
         }
+    }
+
+    public static List<Event> getMyEvents() {
+        return myEvents;
+    }
+
+    public static void setMyEvents(List<Event> myEvents) {
+        HomeActivity.myEvents = myEvents;
+    }
+
+    public static List<Event> getJoinedEvents() {
+        return joinedEvents;
+    }
+
+    public static void setJoinedEvents(List<Event> joinedEvents) {
+        HomeActivity.joinedEvents = joinedEvents;
     }
 
     public static AuthUserInfo getUserInfo(){

@@ -7,6 +7,14 @@
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".CreateEventActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Event"
+        android:textColor="@color/blue_zodiac"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,6 +26,7 @@
         android:layout_margin="10dp"
         >
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,12 +37,12 @@
             />
 
         <EditText
-            android:id="@+id/edit_text_initial"
+            android:id="@+id/nameOfEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:background="@null"
-            android:hint="Event Description: "
+            android:hint="Enter the name of event: "
             android:inputType="text"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -50,7 +59,7 @@
             />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/description"
+            android:id="@+id/descriptionOfEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
@@ -61,24 +70,30 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:autofillHints="" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Rendered Items: "
+            android:text="Host Brand: "
             android:textStyle="bold"
             android:textSize="18sp"
+
             android:textColor="@color/black"
             />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_count_edit_text"
+            android:id="@+id/brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:background="@null"
-            android:textSize="20sp"
-            android:hint="Enter number of rendered Items"
-            android:inputType="number" />
+            android:hint="Enter your host brand"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:autofillHints="" />
+
+
 
         <TextView
             android:layout_width="match_parent"
@@ -114,6 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:id="@+id/createEventBtn"
         android:background="@drawable/button_background"
         android:elevation="4dp"
         android:text="Create Event"/>

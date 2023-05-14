@@ -70,4 +70,17 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", gender=" + gender +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

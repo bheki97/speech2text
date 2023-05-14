@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityProfileBinding;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
+import za.ac.bheki97.speech2text.model.MessageDto;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
@@ -80,22 +81,23 @@ public class ProfileActivity extends AppCompatActivity {
     private void setOnclickListenerForDelAccBtn() {
         delAccBtn.setOnClickListener(view ->{
             retrofitApi.deleteAcc(HomeActivity.getUserInfo().getJwtToken(),
-                    HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<String>() {
+                    HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<MessageDto>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<MessageDto> call, Response<MessageDto> response) {
                     if(response.code()==200){
-                        Toast.makeText(ProfileActivity.this,"Account Deleted successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,response.body().getMessage(),Toast.LENGTH_LONG).show();
                         //HomeActivity.updateUserInfo(null);
 
                         finishAffinity();
+                        startActivity(new Intent(ProfileActivity.this,MainActivity.class));
                         return;
                     }
                     Toast.makeText(ProfileActivity.this,"Server error",Toast.LENGTH_LONG).show();
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(ProfileActivity.this,"Request Failed",Toast.LENGTH_LONG).show();
+                public void onFailure(Call<MessageDto> call, Throwable t) {
+                    Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
                 }
             });
 
