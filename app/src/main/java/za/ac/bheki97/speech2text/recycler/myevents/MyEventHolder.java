@@ -1,12 +1,8 @@
 package za.ac.bheki97.speech2text.recycler.myevents;
 
 
-import android.view.View;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import za.ac.bheki97.speech2text.databinding.RowJoinedEventBinding;
 import za.ac.bheki97.speech2text.databinding.RowMyEventBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
 

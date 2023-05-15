@@ -1,7 +1,5 @@
 package za.ac.bheki97.speech2text;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.icu.text.SimpleDateFormat;
@@ -11,6 +9,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -66,7 +66,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
             Event event = new Event();
             String name = binding.nameOfEvent.getText().toString();
-            String description = binding.nameOfEvent.getText().toString();
+            String description = binding.descriptionOfEvent.getText().toString();
 
             event.setEventKey(name+"##"+description+"##"+name+"##"+description+"##"+name+"##"+description);
             event.setDescription(description);

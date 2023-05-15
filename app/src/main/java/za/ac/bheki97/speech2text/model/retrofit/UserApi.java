@@ -1,10 +1,8 @@
 package za.ac.bheki97.speech2text.model.retrofit;
 
-import kotlin.ParameterName;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -47,6 +45,9 @@ public interface UserApi {
 
     @POST("/event")
     Call<ResponseBody> hostEvent(@Header("Authorization")String jwtToken,@Body Event event);
+
+    @GET("/event/host/{id}")
+    Call<Event[]> getAllHostedEvent();
 
 
 }
