@@ -1,9 +1,12 @@
 package za.ac.bheki97.speech2text.model.event;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import za.ac.bheki97.speech2text.model.user.Host;
 import za.ac.bheki97.speech2text.model.user.User;
+import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
 
 public class Event {
 
@@ -13,8 +16,10 @@ public class Event {
     private String occasion;
     private String description;
     private String date;
+    private List<Guest> guests;
 
     public Event() {
+        guests = new ArrayList<>();
     }
 
     public Event(String eventKey, Host host, String occasion, String description, String date) {
@@ -23,6 +28,7 @@ public class Event {
         this.occasion = occasion;
         this.description = description;
         this.date = date;
+        guests = new ArrayList<>();
     }
 
     public Host getHost() {

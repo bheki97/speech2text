@@ -1,18 +1,32 @@
 package za.ac.bheki97.speech2text.recycler.guest;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import za.ac.bheki97.speech2text.databinding.RowEditGuestBinding;
+import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
+
 public class GuestAdapter extends RecyclerView.Adapter<GuestHolder> {
 
+    List<Guest> guests;
 
+
+    public GuestAdapter(List<Guest> guests){
+        this.guests = guests;
+
+    }
 
     @NonNull
     @Override
     public GuestHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GuestHolder(parent);
+        RowEditGuestBinding binding = RowEditGuestBinding.inflate(LayoutInflater.from(parent.getContext()));
+
+        return new GuestHolder(binding);
     }
 
     @Override
@@ -22,6 +36,6 @@ public class GuestAdapter extends RecyclerView.Adapter<GuestHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return guests.size();
     }
 }
