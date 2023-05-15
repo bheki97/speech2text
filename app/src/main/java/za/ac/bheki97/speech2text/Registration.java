@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityRegistrationBinding;
+import za.ac.bheki97.speech2text.exception.SpeakTextException;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
 import za.ac.bheki97.speech2text.model.user.User;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
@@ -48,6 +50,10 @@ public class Registration extends AppCompatActivity {
 
         binding = ActivityRegistrationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_item);
+
+        binding.originSelectLang.setAdapter(adapter);
 
         //configure Register Button
         registerButton = binding.registerbtn;
@@ -229,6 +235,14 @@ public class Registration extends AppCompatActivity {
             }
         }
 
+        //set Language
+        if(binding.originSelectLang.getText().toString()==null||
+                binding.originSelectLang.getText().toString().isEmpty()){
+            throw new UserInputFieldException("Choose Your Preferred language of translation\n" +
+                    "N.B only English&Afrikaans are Supported for Audio conversion");
+        }
+        user.setLanguage(changeToLangCode(binding.originSelectLang.getText().toString()));
+
 
         if(isPasswordValid){
             user.setPassword(binding.passwrdInput.getText().toString());
@@ -238,12 +252,6 @@ public class Registration extends AppCompatActivity {
 
 
 
-
-        if(binding.contactsInput.getText().toString().isEmpty()){
-            throw new UserInputFieldException("Email Field is Empty");
-        }else{
-            //user.setContactNo(new Long(binding.contactsInput.getText().toString()));
-        }
 
         return user;
     }
@@ -303,6 +311,24 @@ public class Registration extends AppCompatActivity {
 
 
         return builder;
+
+    }
+
+    private String changeToLangCode(String lang){
+
+        if(lang.equalsIgnoreCase("Zulu")){
+            return "zu-ZA";
+        }else if(lang.equalsIgnoreCase("Sotho")){
+            return "st-ZA";
+        }else if(lang.equalsIgnoreCase("Tsonga")){
+            return "ts-ZA";
+        }else if(lang.equalsIgnoreCase("English")){
+            return "en-US";
+        }else if(lang.equalsIgnoreCase("Afrikaans")){
+            return "af-ZA";
+        }else{
+            return lang;
+        }
 
     }
 

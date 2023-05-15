@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
     private static List<Event> myEvents = null;
-    private static List<Event> joinedEvents =null;
+    private static List<Event> joinedEvents = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

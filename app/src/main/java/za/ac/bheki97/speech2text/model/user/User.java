@@ -10,7 +10,7 @@ public class User implements Serializable {
     private String lastname;
     private Character gender;
     private String mobileNumber;
-
+    private String language;
     private String password;
 
 
@@ -58,14 +58,30 @@ public class User implements Serializable {
         this.email = email;
     }
 
-
     public String getEmail() {
         return email;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getPassword() {
         return password;
     }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -80,6 +96,7 @@ public class User implements Serializable {
                 ", lastname='" + lastname + '\'' +
                 ", gender=" + gender +
                 ", mobileNumber='" + mobileNumber + '\'' +
+                ", language='" + language + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

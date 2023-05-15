@@ -16,6 +16,7 @@ public class JoinedEventsFragment extends Fragment {
 
     private FragmentJoinedEventsBinding binding;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         JoinedEventsViewModel joinedEventsViewModel =
@@ -24,8 +25,9 @@ public class JoinedEventsFragment extends Fragment {
         binding = FragmentJoinedEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        joinedEventsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+
+
         return root;
     }
 
