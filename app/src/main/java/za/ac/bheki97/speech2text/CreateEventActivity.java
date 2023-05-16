@@ -33,6 +33,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private ActivityCreateEventBinding binding;
     private LocalDateTime date;
+    private boolean isTimeValid = false;
 
 
     private UserApi retrofitApi;
@@ -111,6 +112,11 @@ public class CreateEventActivity extends AppCompatActivity {
         if(binding.descriptionOfEvent.getText().toString()
                 .equalsIgnoreCase(binding.nameOfEvent.getText().toString()))
             throw new EventException("Brand must be at least different to the Occasion");
+
+        if(!date.isAfter(LocalDateTime.now()))
+            throw new EventException("Date to Soon, schedule for tomorrow");
+
+
 
 //        if(binding.descriptionOfEvent.getText().toString().split(".").length<3 ?
 //            binding.descriptionOfEvent.getText().toString().split("\n").length<3:

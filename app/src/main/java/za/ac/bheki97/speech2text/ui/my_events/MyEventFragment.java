@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,7 @@ import za.ac.bheki97.speech2text.recycler.myevents.MyEventAdapter;
 public class MyEventFragment extends Fragment {
 
     private FragmentMyEventsBinding binding;
+    private MyEventAdapter adapter;
     List<Event> events;
 
     private UserApi retrofitApi;
@@ -42,23 +44,8 @@ public class MyEventFragment extends Fragment {
         retrofitService = new RetrofitService();
         retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
 
+        updateMyEventList();
 
-
-        retrofitApi.getAllHostedEvent(HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<Event[]>() {
-            @Override
-            public void onResponse(Call<Event[]> call, Response<Event[]> response) {
-                if(response.code()==200){
-                    events = new ArrayList<>(Arrays.asList(response.body()));
-                }else{
-                    events = new ArrayList<>();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Event[]> call, Throwable t) {
-                events = new ArrayList<>();
-            }
-        });
 
         if(events==null || events.isEmpty()){
             displayNoEvents();
@@ -71,13 +58,48 @@ public class MyEventFragment extends Fragment {
         return root;
     }
 
+    private void updateMyEventList() {
+        retrofitApi.getAllHostedEvent(HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<Event[]>() {
+            @Override
+            public void onResponse(Call<Event[]> call, Response<Event[]> response) {
+                if(response.code()==200){
+                    events = new ArrayList<>(Arrays.asList(response.body()));
+
+                    System.out.println("I got All the Event ");
+
+                    events.forEach(System.out::println);
+                }else{
+                    try {
+                        System.out.println("Error occurred: "+ response.errorBody().string());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    events = new ArrayList<>();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Event[]> call, Throwable t) {
+                System.out.println("Request Failed");
+                events = new ArrayList<>();
+            }
+        });
+
+    }
+
     private void displayNoEvents() {
 
     }
 
     private void displayRecyclerView() {
-        MyEventAdapter adapter = new MyEventAdapter(events);
+        adapter = new MyEventAdapter(events);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
