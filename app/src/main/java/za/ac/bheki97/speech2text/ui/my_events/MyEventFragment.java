@@ -16,6 +16,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import za.ac.bheki97.speech2text.HomeActivity;
 import za.ac.bheki97.speech2text.databinding.FragmentMyEventsBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
@@ -43,7 +44,7 @@ public class MyEventFragment extends Fragment {
 
 
 
-        retrofitApi.getAllHostedEvent().enqueue(new Callback<Event[]>() {
+        retrofitApi.getAllHostedEvent(HomeActivity.getUserInfo().getUser().getIdNumber()).enqueue(new Callback<Event[]>() {
             @Override
             public void onResponse(Call<Event[]> call, Response<Event[]> response) {
                 if(response.code()==200){
@@ -59,10 +60,11 @@ public class MyEventFragment extends Fragment {
             }
         });
 
-        if(!events.isEmpty()){
-            displayRecyclerView();
-        }else{
+        if(events==null || events.isEmpty()){
             displayNoEvents();
+        }else{
+
+            displayRecyclerView();
         }
 
 

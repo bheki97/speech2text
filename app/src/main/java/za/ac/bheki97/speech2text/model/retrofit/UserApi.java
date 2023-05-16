@@ -46,8 +46,8 @@ public interface UserApi {
     @POST("/event")
     Call<ResponseBody> hostEvent(@Header("Authorization")String jwtToken,@Body Event event);
 
-    @GET("/event/host/{id}")
-    Call<Event[]> getAllHostedEvent();
+    @POST("/event/host")
+    Call<Event[]> getAllHostedEvent(@Body String id);
 
 
 }
