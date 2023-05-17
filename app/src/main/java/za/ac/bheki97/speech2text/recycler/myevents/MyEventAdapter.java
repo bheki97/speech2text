@@ -15,8 +15,9 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventHolder>{
 
     private List<Event> events;
 
-    public MyEventAdapter(List<Event> events) {
-        this.events = events;
+
+    public MyEventAdapter() {
+
     }
 
     @NonNull
@@ -30,15 +31,25 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyEventHolder holder, int position) {
         Event event = events.get(position);
-        holder.bind(event);
+        holder.bind(event,position,this);
     }
 
+    public void setEvents(List<Event> events) {
+        this.events = events;
+        notifyDataSetChanged();
+    }
 
-
-
+    public List<Event> getEvents() {
+        return events;
+    }
 
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    public void CancelEvent(int pos){
+        events.remove(pos);
+        notifyItemRemoved(pos);
     }
 }

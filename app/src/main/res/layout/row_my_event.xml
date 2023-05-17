@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:background="@drawable/panel_background"
+    android:elevation="4dp"
+    android:padding="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    Clock CountDown-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+    <!--    Occasion layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Occasion: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/carrot_orange"
+            android:text="J005 MIE Presentation"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:id="@+id/occasionTxtView"/>
+    </LinearLayout>
+
+    <!--    Description layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Description: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:text="Groups Present their Project "
+            android:textSize="20sp"
+            android:id="@+id/descriptionTxtView"/>
+    </LinearLayout>
+
+    <!--    Buttons layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <Button
+            android:text="Edit"
+            android:id="@+id/edtBtn"
+            android:textColor="@color/blue_zodiac"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="6dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:text="Cancel"
+            android:id="@+id/rmvBtn"
+            android:layout_width="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:layout_marginHorizontal="5dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:text="Invite"
+            android:id="@+id/invBtn"
+            android:layout_width="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:layout_marginHorizontal="6dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

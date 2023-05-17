@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,12 @@ public class MyEventFragment extends Fragment {
     private UserApi retrofitApi;
     private RetrofitService retrofitService;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         MyEventViewModel myEventViewModel =
@@ -41,18 +49,26 @@ public class MyEventFragment extends Fragment {
         binding = FragmentMyEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        events = new ArrayList<>();
+
         retrofitService = new RetrofitService();
         retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
+        adapter = new MyEventAdapter();
+        binding.myEventWrapper.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+
+
+//        if(events==null || events.isEmpty()){
+//
+//            displayNoEvents();
+//            System.out.println("There are not events\n\n");
+//
+//            System.out.println("\n\n");
+//        }else{
+//
+//            displayRecyclerView();
+//        }
 
         updateMyEventList();
-
-
-        if(events==null || events.isEmpty()){
-            displayNoEvents();
-        }else{
-
-            displayRecyclerView();
-        }
 
 
         return root;
@@ -64,24 +80,29 @@ public class MyEventFragment extends Fragment {
             public void onResponse(Call<Event[]> call, Response<Event[]> response) {
                 if(response.code()==200){
                     events = new ArrayList<>(Arrays.asList(response.body()));
+                    adapter.setEvents(events);
+                    System.out.println("got all events");
+                    //adapter.getEvents().forEach(System.out::println);
+                    binding.myEventWrapper.setAdapter(adapter);
 
-                    System.out.println("I got All the Event ");
-
-                    events.forEach(System.out::println);
+                    //binding.errMsg.setText("");
                 }else{
                     try {
                         System.out.println("Error occurred: "+ response.errorBody().string());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    events = new ArrayList<>();
+
                 }
+
+
             }
 
             @Override
             public void onFailure(Call<Event[]> call, Throwable t) {
                 System.out.println("Request Failed");
-                events = new ArrayList<>();
+
+                //binding.errMsg.setText("You currently don't have events");
             }
         });
 
@@ -89,11 +110,15 @@ public class MyEventFragment extends Fragment {
 
     private void displayNoEvents() {
 
+       // binding.myEventWrapper.setAdapter(adapter = new MyEventAdapter(new ArrayList<>()));
+        //binding.errMsg.setText("You currently Don't Events");
+
     }
 
     private void displayRecyclerView() {
-        adapter = new MyEventAdapter(events);
-
+       // adapter = new MyEventAdapter(events);
+        binding.myEventWrapper.setAdapter(adapter);
+        //binding.errMsg.setText("");
 
     }
 

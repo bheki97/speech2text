@@ -49,5 +49,8 @@ public interface UserApi {
     @POST("/event/host")
     Call<Event[]> getAllHostedEvent(@Body String id);
 
+    @DELETE("/event/{id}")
+    Call<Boolean> deleteEvent(@Path("id") String id);
+
 
 }

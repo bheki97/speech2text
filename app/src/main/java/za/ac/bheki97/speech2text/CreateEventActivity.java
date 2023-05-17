@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -66,14 +67,15 @@ public class CreateEventActivity extends AppCompatActivity {
                 return;
             }
             Event event = new Event();
-            String name = binding.nameOfEvent.getText().toString();
-            String description = binding.descriptionOfEvent.getText().toString();
+            String name = binding.nameOfEvent.getText().toString().trim();
+            String description = binding.descriptionOfEvent.getText().toString().trim();
 
             event.setEventKey(name+"##"+description+"##"+name+"##"+description+"##"+name+"##"+description);
             event.setDescription(description);
             event.setOccasion(name);
             event.setHost(new Host(HomeActivity.getUserInfo().getUser(),binding.nameOfEvent.getText().toString()));
             event.setDate(date.toString());
+            System.out.println(date.toString());
 
             retrofitApi.hostEvent(HomeActivity.getUserInfo().getJwtToken(),event).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -110,12 +112,12 @@ public class CreateEventActivity extends AppCompatActivity {
             throw new EventException("Your Host cannot be empty cannot be empty!!!");
 
         if(binding.descriptionOfEvent.getText().toString()
-                .equalsIgnoreCase(binding.nameOfEvent.getText().toString()))
-            throw new EventException("Brand must be at least different to the Occasion");
+                .equalsIgnoreCase(binding.nameOfEvent.getText().toString()));
 
-        if(!date.isAfter(LocalDateTime.now()))
-            throw new EventException("Date to Soon, schedule for tomorrow");
-
+        //System.out.println("Date valid: "+isTimeValid);
+        if(!isTimeValid){
+            throw new EventException("That's too soon, choose date from Tomorrow!!!!!");
+        }
 
 
 //        if(binding.descriptionOfEvent.getText().toString().split(".").length<3 ?
@@ -146,7 +148,18 @@ public class CreateEventActivity extends AppCompatActivity {
                         calendar.set(Calendar.DAY_OF_MONTH, day);
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
                         calendar.set(Calendar.MINUTE, minute);
-                        date = LocalDateTime.of(year,month,day,hour,minute);
+
+
+
+                        try {
+                            date = LocalDateTime.of(year,month,day,hour,minute);
+                        }catch (DateTimeException dte){
+                            System.out.println("Error Occurred");
+                            date = LocalDateTime.of(year,month+1,day,hour,minute);
+                        }
+                        System.out.println("Date Valid now: "+ date.plusMonths(1).isAfter(LocalDateTime.now()));
+                        isTimeValid = date.plusMonths(1).isAfter(LocalDateTime.now());
+
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         ((TextInputEditText) view).setText(sdf.format(calendar.getTime()));
                     }
