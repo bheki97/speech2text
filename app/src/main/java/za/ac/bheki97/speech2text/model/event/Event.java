@@ -1,5 +1,6 @@
 package za.ac.bheki97.speech2text.model.event;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import za.ac.bheki97.speech2text.model.user.Host;
 import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
 
-public class Event {
+public class Event implements Serializable {
 
     private String eventKey;
 

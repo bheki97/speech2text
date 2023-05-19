@@ -37,8 +37,11 @@ dependencies {
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
 
-    //Scanner Dependency
+    //QR code Scanner Dependency
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
+    //QR code Generator dependency
+    implementation 'com.google.zxing:core:3.3.3'
 
     //RecyclerView Dependency
     implementation 'androidx.recyclerview:recyclerview:1.2.1'

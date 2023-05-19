@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.UUID;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,7 +36,6 @@ public class CreateEventActivity extends AppCompatActivity {
     private ActivityCreateEventBinding binding;
     private LocalDateTime date;
     private boolean isTimeValid = false;
-
 
     private UserApi retrofitApi;
     private RetrofitService retrofitService;
@@ -66,38 +66,45 @@ public class CreateEventActivity extends AppCompatActivity {
                 Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 return;
             }
-            Event event = new Event();
-            String name = binding.nameOfEvent.getText().toString().trim();
-            String description = binding.descriptionOfEvent.getText().toString().trim();
+                createEventAndMakeRetrofitCall();
 
-            event.setEventKey(name+"##"+description+"##"+name+"##"+description+"##"+name+"##"+description);
-            event.setDescription(description);
-            event.setOccasion(name);
-            event.setHost(new Host(HomeActivity.getUserInfo().getUser(),binding.nameOfEvent.getText().toString()));
-            event.setDate(date.toString());
-            System.out.println(date.toString());
 
-            retrofitApi.hostEvent(HomeActivity.getUserInfo().getJwtToken(),event).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.code()==200){
-                        Toast.makeText(CreateEventActivity.this,"Event Created",Toast.LENGTH_SHORT).show();
-                    }else{
-                        try {
-                            Toast.makeText(CreateEventActivity.this,response.errorBody().string(),Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            Toast.makeText(CreateEventActivity.this,"Error Occurred",Toast.LENGTH_SHORT).show();
-                        }
+
+
+        });
+    }
+
+    private void createEventAndMakeRetrofitCall() {
+
+        Event event = new Event();
+        String name = binding.nameOfEvent.getText().toString().trim();
+        String description = binding.descriptionOfEvent.getText().toString().trim();
+
+        event.setEventKey(UUID.randomUUID().toString());
+        event.setDescription(description);
+        event.setOccasion(name);
+        event.setHost(new Host(HomeActivity.getUserInfo().getUser(),binding.nameOfEvent.getText().toString()));
+        event.setDate(date.toString());
+        System.out.println(date.toString());
+
+        retrofitApi.hostEvent(HomeActivity.getUserInfo().getJwtToken(),event).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code()==200){
+                    Toast.makeText(CreateEventActivity.this,"Event Created",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        Toast.makeText(CreateEventActivity.this,response.errorBody().string(),Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Toast.makeText(CreateEventActivity.this,"Error Occurred",Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                }
-            });
-
-
+            }
         });
     }
 

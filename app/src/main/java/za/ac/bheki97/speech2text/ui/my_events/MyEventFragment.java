@@ -80,6 +80,7 @@ public class MyEventFragment extends Fragment {
             public void onResponse(Call<Event[]> call, Response<Event[]> response) {
                 if(response.code()==200){
                     events = new ArrayList<>(Arrays.asList(response.body()));
+                    events.forEach(System.out::println);
                     adapter.setEvents(events);
                     System.out.println("got all events");
                     //adapter.getEvents().forEach(System.out::println);

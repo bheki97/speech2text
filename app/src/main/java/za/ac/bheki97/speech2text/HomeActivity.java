@@ -4,39 +4,46 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanOptions;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.ActivityHomeBinding;
+import za.ac.bheki97.speech2text.exception.EventException;
+import za.ac.bheki97.speech2text.model.JoinEventDto;
 import za.ac.bheki97.speech2text.model.event.Event;
+import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
+import za.ac.bheki97.speech2text.model.retrofit.UserApi;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
-import za.ac.bheki97.speech2text.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
+
 
     private static AuthUserInfo userInfo;
     private static boolean audioRecordingPermissionGranted;
@@ -51,6 +58,10 @@ public class HomeActivity extends AppCompatActivity {
     private static List<Event> myEvents = null;
     private static List<Event> joinedEvents = null;
 
+
+    private UserApi retrofitApi;
+    private RetrofitService retrofitService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,9 @@ public class HomeActivity extends AppCompatActivity {
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        retrofitService = new RetrofitService();
+        retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
@@ -123,24 +137,81 @@ public class HomeActivity extends AppCompatActivity {
 
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(),
             result -> {
+                String code = result.getContents();
+                if(code!=null){
+                    String arr[] = code.split("##");
+                    System.out.println("Length of arr: "+arr.length);
+                    try {
+                        if(arr.length!=3)
+                            throw new EventException("Invalid QR code: "+ Arrays.asList(arr));
 
-                if(result.getContents() !=null) {
-                    //openMainActivity(result.getContents());
+                        joinEventCal(arr[0]);
 
-                    AlertDialog.Builder builder = new  AlertDialog.Builder( HomeActivity.this);
-                    builder.setTitle("Results");
-                    builder.setMessage("Invalid Event Code.\nReason might be that the Functionality " +
-                            "is not yet implemented");
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
 
-                    builder.create().show();
+
+
+                    } catch (EventException e) {
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(HomeActivity.this);
+
+                        builder.setTitle("Error");
+                        builder.setMessage(e.getMessage());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.create().show();
+                    }
+
                 }
+
+//                if(result.getContents() !=null) {
+//                    //openMainActivity(result.getContents());
+//
+//                    AlertDialog.Builder builder = new  AlertDialog.Builder( HomeActivity.this);
+//                    builder.setTitle("Results");
+//                    builder.setMessage("Invalid Event Code.\nReason might be that the Functionality " +
+//                            "is not yet implemented");
+//                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//
+//                    builder.create().show();
+//                }
             });
+
+    private void joinEventCal(String s) {
+
+
+        retrofitApi.joinEvent(new JoinEventDto(s,userInfo.getUser().getIdNumber())).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                if(response.code()==200){
+                    if(response.body())
+                        Toast.makeText(HomeActivity.this,"Successfully Joined!!!",Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(HomeActivity.this,"Failed to Join",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        Toast.makeText(HomeActivity.this,response.errorBody().string(),Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Toast.makeText(HomeActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast.makeText(HomeActivity.this,"Server Error, connection Failed",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
     private void startCreateEventActivty() {
         startActivity(new Intent(HomeActivity.this,CreateEventActivity.class));

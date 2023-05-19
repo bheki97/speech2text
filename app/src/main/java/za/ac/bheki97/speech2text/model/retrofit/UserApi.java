@@ -12,6 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import za.ac.bheki97.speech2text.model.JoinEventDto;
 import za.ac.bheki97.speech2text.model.MessageDto;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.translation.TranslationDto;
@@ -53,4 +54,6 @@ public interface UserApi {
     Call<Boolean> deleteEvent(@Path("id") String id);
 
 
+    @POST("/event/join")
+    Call<Boolean> joinEvent(@Body JoinEventDto joinEventDto);
 }

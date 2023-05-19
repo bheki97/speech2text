@@ -1,16 +1,28 @@
 package za.ac.bheki97.speech2text.recycler.myevents;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import za.ac.bheki97.speech2text.R;
 import za.ac.bheki97.speech2text.databinding.RowMyEventBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
@@ -32,7 +44,6 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
         this.binding = binding;
         retrofitService = new RetrofitService();
         retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
-
     }
 
     public void bind(Event event,int position,MyEventAdapter adapter){
@@ -42,12 +53,15 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
         binding.occasionTxtView.setText(event.getOccasion());
         binding.descriptionTxtView.setText(event.getDescription());
         setOnclickListenerRmvBtn();
+        setOnclickListenerInvBtn();
 
     }
 
     public void setOnclickListenerEditBtn(){
         binding.edtBtn.setOnClickListener( v ->{
-
+            Intent intent = new Intent(binding.getRoot().getContext(),EditMyEventActivity.class);
+            intent.putExtra("event",event);
+            binding.getRoot().getContext().startActivity(intent);
         });
     }
     public void setOnclickListenerRmvBtn(){
@@ -95,6 +109,44 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
     public void setOnclickListenerInvBtn(){
         binding.invBtn.setOnClickListener( v ->{
 
+            System.out.println("Event Key: "+event.getEventKey());
+            MultiFormatWriter writer = new MultiFormatWriter();
+            final Dialog dialog = new Dialog(binding.getRoot().getContext());
+
+
+            dialog.setContentView(R.layout.dialog_image);
+
+            ImageView imageView = dialog.findViewById(R.id.image_view);
+
+
+            try {
+                BitMatrix matrix = writer.encode(event.getEventKey()+"##"+event.getEventKey()+"##"+event.getEventKey(), BarcodeFormat.QR_CODE, 500, 500);
+                BarcodeEncoder encoder = new BarcodeEncoder();
+                Bitmap bitmap = encoder.createBitmap(matrix);
+
+
+
+
+                imageView.setImageBitmap(bitmap);
+
+                Button closeButton = dialog.findViewById(R.id.close_button);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+                dialog.setCanceledOnTouchOutside(true);
+
+                // Show the dialog
+                dialog.show();
+
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
         });
     }
 
