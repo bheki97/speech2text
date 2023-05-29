@@ -54,7 +54,7 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
         binding.descriptionTxtView.setText(event.getDescription());
         setOnclickListenerRmvBtn();
         setOnclickListenerInvBtn();
-
+        setOnclickListenerEditBtn();
     }
 
     public void setOnclickListenerEditBtn(){

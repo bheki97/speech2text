@@ -13,12 +13,15 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import za.ac.bheki97.speech2text.model.JoinEventDto;
+import za.ac.bheki97.speech2text.model.MakeSpeakerDto;
 import za.ac.bheki97.speech2text.model.MessageDto;
 import za.ac.bheki97.speech2text.model.event.Event;
+import za.ac.bheki97.speech2text.model.event.GuestEvent;
 import za.ac.bheki97.speech2text.model.translation.TranslationDto;
 import za.ac.bheki97.speech2text.model.user.AuthRequest;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
 import za.ac.bheki97.speech2text.model.user.User;
+import za.ac.bheki97.speech2text.ui.join_group.JoinEvent;
 
 public interface UserApi {
 
@@ -53,6 +56,17 @@ public interface UserApi {
     @DELETE("/event/{id}")
     Call<Boolean> deleteEvent(@Path("id") String id);
 
+    @POST("/event/joined")
+    Call<GuestEvent[]> getAllJoinedEvents(@Body String id);
+
+    @PUT("/event")
+    Call<Boolean> updateHostedEvent(@Body Event event);
+
+    @POST("/event/change-title")
+    Call<Boolean> changeGuestTitle(@Body MakeSpeakerDto dto);
+
+    @DELETE("/event/leave/{eventKey}/{accId}")
+    Call<Boolean> leaveJoinedEvent(@Path("eventKey")String eventKey,@Path("accId")String accId);
 
     @POST("/event/join")
     Call<Boolean> joinEvent(@Body JoinEventDto joinEventDto);

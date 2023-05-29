@@ -1,8 +1,11 @@
 package za.ac.bheki97.speech2text.recycler.guest.model;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import za.ac.bheki97.speech2text.model.user.User;
 
-public class Guest {
+public class Guest implements Serializable {
 
     private int guestId;
     private User account;
@@ -33,6 +36,19 @@ public class Guest {
 
     public void setJoindate(String joindate) {
         this.joindate = joindate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Guest guest = (Guest) o;
+        return guestId == guest.guestId && account.equals(guest.account) && joindate.equals(guest.joindate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guestId, account, joindate);
     }
 
     @Override

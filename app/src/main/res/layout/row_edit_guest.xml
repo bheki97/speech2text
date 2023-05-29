@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:background="@drawable/panel_background"
+    android:elevation="4dp"
+    android:padding="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    guest Id-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Guest ID: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/my_sin"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/txtxGuestId"
+            android:text="52"/>
+
+    </LinearLayout>
+
+<!--    guest name-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Guest Name: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="16sp"
+            android:id="@+id/txtGuestName"
+            android:text="Bheki Mautjana"/>
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="35sp"
+        android:text="Make Speaker"
+        android:id="@+id/makeSpeakerBtn"
+        android:layout_gravity="end"/>
+
+</LinearLayout>

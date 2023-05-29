@@ -23,7 +23,7 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventHolder>{
     @NonNull
     @Override
     public MyEventHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RowMyEventBinding binding = RowMyEventBinding.inflate(LayoutInflater.from(parent.getContext()));
+        RowMyEventBinding binding = RowMyEventBinding.inflate(LayoutInflater.from(parent.getContext()), parent,false);
 
         return new MyEventHolder(binding);
     }

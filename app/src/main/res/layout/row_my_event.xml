@@ -5,7 +5,7 @@
     android:background="@drawable/panel_background"
     android:elevation="4dp"
     android:padding="5dp"
-    android:layout_marginTop="10dp"
+    android:layout_margin="10dp"
     android:layout_height="wrap_content">
 
 <!--    Clock CountDown-->
@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/carrot_orange"
+            android:textColor="@color/my_sin"
             android:text="J005 MIE Presentation"
             android:textStyle="bold"
             android:textSize="20sp"

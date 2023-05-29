@@ -5,14 +5,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import za.ac.bheki97.speech2text.model.user.Host;
 import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
 
 public class Event implements Serializable {
 
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     private String eventKey;
-
     private Host host;
     private String occasion;
     private String description;
@@ -22,6 +23,14 @@ public class Event implements Serializable {
     public Event() {
         guests = new ArrayList<>();
     }
+    public Event(Event event){
+        this.eventKey = event.getEventKey();
+        this.host = event.getHost();
+        this.occasion = event.getOccasion();
+        this.description = event.getDescription();
+        this.date = event.getDate();
+        guests = event.getGuests();
+    }
 
     public Event(String eventKey, Host host, String occasion, String description, String date) {
         this.eventKey = eventKey;
@@ -30,6 +39,14 @@ public class Event implements Serializable {
         this.description = description;
         this.date = date;
         guests = new ArrayList<>();
+    }
+
+    public List<Guest> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(List<Guest> guests) {
+        this.guests = guests;
     }
 
     public Host getHost() {
@@ -72,10 +89,27 @@ public class Event implements Serializable {
         this.date = date;
     }
 
+    public void setLocalDateTime(LocalDateTime localDateTime){
+        this.date = localDateTime.format(FORMATTER);
+    }
+
     public LocalDateTime getLocalDateTime(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(date, formatter);
+
+        LocalDateTime localDateTime = LocalDateTime.parse(date, FORMATTER);
         return localDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return eventKey.equals(event.eventKey) && host.equals(event.host) && occasion.equals(event.occasion) && description.equals(event.description) && date.equals(event.date) && guests.equals(event.guests);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventKey, host, occasion, description, date, guests);
     }
 
     @Override
