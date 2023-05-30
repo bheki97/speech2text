@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,10 +21,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.ByteArrayOutputStream;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.R;
+import za.ac.bheki97.speech2text.databinding.DialogImageBinding;
 import za.ac.bheki97.speech2text.databinding.RowMyEventBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
@@ -114,10 +119,8 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
             final Dialog dialog = new Dialog(binding.getRoot().getContext());
 
 
-            dialog.setContentView(R.layout.dialog_image);
-
-            ImageView imageView = dialog.findViewById(R.id.image_view);
-
+            DialogImageBinding dialogBinding = DialogImageBinding.inflate(dialog.getLayoutInflater());
+            dialog.setContentView(dialogBinding.getRoot());
 
             try {
                 BitMatrix matrix = writer.encode(event.getEventKey()+"##"+event.getEventKey()+"##"+event.getEventKey(), BarcodeFormat.QR_CODE, 500, 500);
@@ -127,15 +130,12 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
 
 
 
-                imageView.setImageBitmap(bitmap);
-
-                Button closeButton = dialog.findViewById(R.id.close_button);
-                closeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
+                dialogBinding.imageView.setImageBitmap(bitmap);
+                dialogBinding.closeButton.setOnClickListener( vi -> dialog.dismiss());
+                dialogBinding.shareButton.setOnClickListener( sh ->{
+                        shareImage(bitmap);
                 });
+
 
 
 
@@ -148,6 +148,28 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
                 e.printStackTrace();
             }
         });
+    }
+
+
+    private void shareImage(Bitmap bitmap){
+        Uri imageUri = getImageUri(bitmap);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Shared Image");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this image I created!");
+
+        // Start the share activity
+        binding.getRoot().getContext().startActivity(Intent.createChooser(shareIntent, "Share Image"));
+    }
+
+
+    private Uri getImageUri(Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(binding.getRoot().getContext().getContentResolver(), bitmap, "Shared Image", null);
+        return Uri.parse(path);
     }
 
 }
