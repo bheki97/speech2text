@@ -22,6 +22,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +61,17 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
         setOnclickListenerRmvBtn();
         setOnclickListenerInvBtn();
         setOnclickListenerEditBtn();
+        event.setDate(event.getDate().substring(0,event.getDate().length()-3));
+
+        binding.getRoot().setOnClickListener( v->{
+
+            if(event.getLocalDateTime().isBefore(LocalDateTime.now())){
+                Toast.makeText(binding.getRoot().getContext() ,"Event Started", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(binding.getRoot().getContext(), "Event has not yet Started", Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
 
     public void setOnclickListenerEditBtn(){

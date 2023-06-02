@@ -57,9 +57,19 @@ public class JoinedEventHolder extends RecyclerView.ViewHolder{
         LocalDateTime date = LocalDateTime.parse(event.getDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'th' EEEE MMM yyyy, HH:mm");
         binding.txtEventDate.setText(date.format(formatter));
-
+        event.setDate(event.getDate().substring(0,event.getDate().length()-3));
         //Set Onclick for the leave Button
         leaveEvent();
+
+        binding.getRoot().setOnClickListener( v->{
+
+            if(event.getLocalDateTime().isBefore(LocalDateTime.now())){
+                Toast.makeText(binding.getRoot().getContext() ,"Event Started", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(binding.getRoot().getContext(), "Event has not yet Started", Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
 
     private void leaveEvent(){

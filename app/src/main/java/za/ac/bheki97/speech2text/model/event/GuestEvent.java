@@ -1,11 +1,13 @@
 package za.ac.bheki97.speech2text.model.event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import za.ac.bheki97.speech2text.model.user.Host;
 import za.ac.bheki97.speech2text.recycler.guest.model.Speaker;
 
 public class GuestEvent {
+
 
     private Host host;
     private List<Speaker> speakers;
@@ -61,4 +63,11 @@ public class GuestEvent {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public LocalDateTime getLocalDateTime() {
+
+        LocalDateTime localDateTime = LocalDateTime.parse(date, Event.FORMATTER);
+        return localDateTime;
+
+}
 }

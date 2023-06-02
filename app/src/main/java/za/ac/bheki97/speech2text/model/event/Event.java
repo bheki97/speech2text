@@ -12,7 +12,7 @@ import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
 
 public class Event implements Serializable {
 
-    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    public final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     private String eventKey;
     private Host host;
     private String occasion;

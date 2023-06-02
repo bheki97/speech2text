@@ -35,7 +35,7 @@ public class EditMyEventActivity extends AppCompatActivity {
 
     private ActivityEditMyEventBinding binding;
     private LocalDateTime date;
-    private boolean isTimeValid = false;
+    private boolean isTimeValid = true;
     private Event event,eventChanges;
     private UserApi retrofitApi;
     private RetrofitService retrofitService;
@@ -61,7 +61,11 @@ public class EditMyEventActivity extends AppCompatActivity {
         //prefill event data
         binding.idOccasion.setText(event.getOccasion());
         binding.editDescption.setText(event.getDescription());
+        // 10  0 7
+
         binding.dateTimeEditText.setText(event.getDate());
+
+        date=event.getLocalDateTime();
 
         setOnClickListenerForUpdateButton();
     }
@@ -111,6 +115,7 @@ public class EditMyEventActivity extends AppCompatActivity {
 
         eventChanges.setOccasion(txtOcc);
         eventChanges.setDescription(txtDesc);
+        eventChanges.setDate(date.toString());
 
         if(txtOcc.isEmpty())
             throw new UserInputFieldException("Please enter occasion");
@@ -154,8 +159,9 @@ public class EditMyEventActivity extends AppCompatActivity {
                             System.out.println("Error Occurred");
                             date = LocalDateTime.of(year,month+1,day,hour,minute);
                         }
-                        System.out.println("Date Valid now: "+ date.plusMonths(1).isAfter(LocalDateTime.now()));
-                        isTimeValid = date.plusMonths(1).isAfter(LocalDateTime.now());
+                        date = date.plusMonths(1);
+                        System.out.println("Date Valid now: "+(date.isAfter(LocalDateTime.now())));
+                        isTimeValid = date.isAfter(LocalDateTime.now());
                         //isTimeValid &= date.equals(LocalDateTime.parse(event.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
 
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());

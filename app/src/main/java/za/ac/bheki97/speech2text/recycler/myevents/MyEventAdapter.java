@@ -14,6 +14,7 @@ import za.ac.bheki97.speech2text.model.event.Event;
 public class MyEventAdapter extends RecyclerView.Adapter<MyEventHolder>{
 
     private List<Event> events;
+    private RecyclerView.OnItemTouchListener listener;
 
 
     public MyEventAdapter() {

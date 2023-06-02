@@ -164,8 +164,9 @@ public class CreateEventActivity extends AppCompatActivity {
                             System.out.println("Error Occurred");
                             date = LocalDateTime.of(year,month+1,day,hour,minute);
                         }
-                        System.out.println("Date Valid now: "+ date.plusMonths(1).isAfter(LocalDateTime.now()));
-                        isTimeValid = date.plusMonths(1).isAfter(LocalDateTime.now());
+                        date = date.plusMonths(1);
+                        System.out.println("Date Valid now: "+(date.isAfter(LocalDateTime.now())));
+                        isTimeValid = date.isAfter(LocalDateTime.now());
 
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         ((TextInputEditText) view).setText(sdf.format(calendar.getTime()));
