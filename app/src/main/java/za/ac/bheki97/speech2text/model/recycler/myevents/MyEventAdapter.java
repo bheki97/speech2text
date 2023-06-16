@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.recycler.myevents;
+package za.ac.bheki97.speech2text.model.recycler.myevents;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

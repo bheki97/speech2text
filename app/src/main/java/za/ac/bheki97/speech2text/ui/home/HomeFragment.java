@@ -378,6 +378,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
                 Toast.makeText(getActivity(),"Request Failed",Toast.LENGTH_SHORT).show();
             }
         });

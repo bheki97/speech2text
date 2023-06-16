@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.recycler.guest;
+package za.ac.bheki97.speech2text.model.recycler.guest;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import za.ac.bheki97.speech2text.databinding.RowEditGuestBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
-import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Guest;
 
 public class GuestAdapter extends RecyclerView.Adapter<GuestHolder> {
 

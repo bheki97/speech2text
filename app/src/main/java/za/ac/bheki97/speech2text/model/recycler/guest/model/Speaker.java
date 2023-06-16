@@ -1,6 +1,5 @@
-package za.ac.bheki97.speech2text.recycler.guest.model;
+package za.ac.bheki97.speech2text.model.recycler.guest.model;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public class Speaker extends Guest{

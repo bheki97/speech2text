@@ -4,6 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     private AuthUserInfo userInfo;
     private TextView passwrdReset;
     private User user;
+    private String transLang;
 
     private UserApi retrofitApi;
     private RetrofitService retrofitService;
@@ -50,6 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
         retrofitService = new RetrofitService();
         retrofitApi = retrofitService.getRetrofit().create(UserApi.class);
 
+        //Configure Language select
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, android.R.layout.simple_spinner_item);
+        binding.translationSelectLang.setAdapter(adapter);
+        setOnClickListenerForTranslationSelectLang();
 
 
         //initial User to the Edit Text
@@ -74,7 +82,16 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
+    private void setOnClickListenerForTranslationSelectLang() {
+        binding.translationSelectLang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                transLang = adapterView.getItemAtPosition(position).toString();
 
+
+            }
+        });
+    }
 
 
     private void setOnclickListenerForDelAccBtn() {
@@ -255,6 +272,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
+        if(transLang==null || transLang.isEmpty()){
+            throw new UserInputFieldException("Email Field is Empty");
+        }else{
+             user.setLanguage(changeToLangCode(transLang));
+        }
+
+
+
         //update Mobile Number
         data = binding.mobileNumEditTxt.getText().toString();
         if(data.isEmpty()){
@@ -271,6 +296,24 @@ public class ProfileActivity extends AppCompatActivity {
             }else{
                 throw new UserInputFieldException("Mobile Number Must Contain digits only");
             }
+        }
+
+    }
+
+    private String changeToLangCode(String lang){
+
+        if(lang.equalsIgnoreCase("Zulu")){
+            return "zu-ZA";
+        }else if(lang.equalsIgnoreCase("Sotho")){
+            return "st-ZA";
+        }else if(lang.equalsIgnoreCase("Tsonga")){
+            return "ts-ZA";
+        }else if(lang.equalsIgnoreCase("English")){
+            return "en-US";
+        }else if(lang.equalsIgnoreCase("Afrikaans")){
+            return "af-ZA";
+        }else{
+            return lang;
         }
 
     }

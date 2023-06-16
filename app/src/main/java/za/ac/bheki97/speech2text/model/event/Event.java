@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import za.ac.bheki97.speech2text.model.user.Host;
-import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Guest;
 
 public class Event implements Serializable {
 

@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_panel"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:background="@drawable/panel_background"
+    android:elevation="4dp"
+    android:padding="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    Speaker name-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Speaker: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="16sp"
+            android:id="@+id/txtSpeakername"
+            android:text="Bheki Mautjana"/>
+    </LinearLayout>
+
+    <!--    Event Date-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Speech: "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_zodiac"
+            android:textSize="16sp"
+            android:id="@+id/txtspeech"
+            android:text="Hello World"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnLeave"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:textColor="@color/blue_zodiac"
+            android:textAlignment="center"
+            android:text="Listen"/>
+
+    </LinearLayout>
+
+</LinearLayout>

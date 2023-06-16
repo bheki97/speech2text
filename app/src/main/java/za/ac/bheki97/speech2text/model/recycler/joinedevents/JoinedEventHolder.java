@@ -1,6 +1,7 @@
-package za.ac.bheki97.speech2text.recycler.joinedevents;
+package za.ac.bheki97.speech2text.model.recycler.joinedevents;
 
 
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import za.ac.bheki97.speech2text.AttendEventActivity;
 import za.ac.bheki97.speech2text.HomeActivity;
 import za.ac.bheki97.speech2text.databinding.RowJoinedEventBinding;
 import za.ac.bheki97.speech2text.model.event.GuestEvent;
@@ -64,7 +66,12 @@ public class JoinedEventHolder extends RecyclerView.ViewHolder{
         binding.getRoot().setOnClickListener( v->{
 
             if(event.getLocalDateTime().isBefore(LocalDateTime.now())){
+
+                Intent intent = new Intent(binding.getRoot().getContext(),
+                        AttendEventActivity.class);
+                intent.putExtra("eventKey",event.getEventKey());
                 Toast.makeText(binding.getRoot().getContext() ,"Event Started", Toast.LENGTH_SHORT).show();
+                binding.getRoot().getContext().startActivity(intent);
             }else{
                 Toast.makeText(binding.getRoot().getContext(), "Event has not yet Started", Toast.LENGTH_SHORT).show();
             }

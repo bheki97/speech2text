@@ -24,7 +24,7 @@ import za.ac.bheki97.speech2text.databinding.FragmentMyEventsBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
-import za.ac.bheki97.speech2text.recycler.myevents.MyEventAdapter;
+import za.ac.bheki97.speech2text.model.recycler.myevents.MyEventAdapter;
 
 public class MyEventFragment extends Fragment {
 

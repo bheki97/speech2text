@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +24,7 @@ import za.ac.bheki97.speech2text.databinding.FragmentJoinedEventsBinding;
 import za.ac.bheki97.speech2text.model.event.GuestEvent;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
-import za.ac.bheki97.speech2text.recycler.joinedevents.JoinedEventAdapter;
+import za.ac.bheki97.speech2text.model.recycler.joinedevents.JoinedEventAdapter;
 
 public class JoinedEventsFragment extends Fragment {
 

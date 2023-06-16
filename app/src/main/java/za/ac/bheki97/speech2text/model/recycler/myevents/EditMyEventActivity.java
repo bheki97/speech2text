@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.recycler.myevents;
+package za.ac.bheki97.speech2text.model.recycler.myevents;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,21 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import za.ac.bheki97.speech2text.CreateEventActivity;
 import za.ac.bheki97.speech2text.databinding.ActivityEditMyEventBinding;
 import za.ac.bheki97.speech2text.exception.UserInputFieldException;
 import za.ac.bheki97.speech2text.model.event.Event;
+import za.ac.bheki97.speech2text.model.recycler.guest.GuestAdapter;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
-import za.ac.bheki97.speech2text.recycler.guest.GuestAdapter;
 
 public class EditMyEventActivity extends AppCompatActivity {
 
@@ -93,12 +92,15 @@ public class EditMyEventActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.code()==200 && response.body()!=null && response.body()){
-
                     event = new Event(eventChanges);
-
-
                     Toast.makeText(EditMyEventActivity.this, "Successfully Edited!!!", Toast.LENGTH_SHORT).show();
 
+                }else {
+                    try {
+                        Toast.makeText(binding.getRoot().getContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                       }
                 }
             }
 

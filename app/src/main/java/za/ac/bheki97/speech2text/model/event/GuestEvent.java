@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import za.ac.bheki97.speech2text.model.user.Host;
-import za.ac.bheki97.speech2text.recycler.guest.model.Speaker;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Speaker;
 
 public class GuestEvent {
 

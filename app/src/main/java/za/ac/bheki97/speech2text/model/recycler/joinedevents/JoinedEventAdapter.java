@@ -1,6 +1,5 @@
-package za.ac.bheki97.speech2text.recycler.joinedevents;
+package za.ac.bheki97.speech2text.model.recycler.joinedevents;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 

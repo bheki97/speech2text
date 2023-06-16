@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.recycler.myevents;
+package za.ac.bheki97.speech2text.model.recycler.myevents;
 
 
 import android.app.Dialog;
@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +24,7 @@ import java.time.LocalDateTime;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import za.ac.bheki97.speech2text.R;
+import za.ac.bheki97.speech2text.AttendEventActivity;
 import za.ac.bheki97.speech2text.databinding.DialogImageBinding;
 import za.ac.bheki97.speech2text.databinding.RowMyEventBinding;
 import za.ac.bheki97.speech2text.model.event.Event;
@@ -66,7 +63,11 @@ public class MyEventHolder extends RecyclerView.ViewHolder{
         binding.getRoot().setOnClickListener( v->{
 
             if(event.getLocalDateTime().isBefore(LocalDateTime.now())){
+                Intent intent = new Intent(binding.getRoot().getContext(),
+                        AttendEventActivity.class);
+                intent.putExtra("eventKey",event.getEventKey());
                 Toast.makeText(binding.getRoot().getContext() ,"Event Started", Toast.LENGTH_SHORT).show();
+                binding.getRoot().getContext().startActivity(intent);
             }else{
                 Toast.makeText(binding.getRoot().getContext(), "Event has not yet Started", Toast.LENGTH_SHORT).show();
             }

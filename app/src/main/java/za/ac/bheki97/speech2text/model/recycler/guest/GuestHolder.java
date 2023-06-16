@@ -1,21 +1,21 @@
-package za.ac.bheki97.speech2text.recycler.guest;
+package za.ac.bheki97.speech2text.model.recycler.guest;
 
 
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import za.ac.bheki97.speech2text.databinding.RowEditGuestBinding;
 import za.ac.bheki97.speech2text.model.MakeSpeakerDto;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Guest;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Speaker;
 import za.ac.bheki97.speech2text.model.retrofit.RetrofitService;
 import za.ac.bheki97.speech2text.model.retrofit.UserApi;
-import za.ac.bheki97.speech2text.recycler.guest.model.Guest;
-import za.ac.bheki97.speech2text.recycler.guest.model.Speaker;
 
 //this guest holder is for the Edit Event
 public class GuestHolder extends RecyclerView.ViewHolder{
@@ -68,6 +68,12 @@ public class GuestHolder extends RecyclerView.ViewHolder{
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if(response.code()==200){
                     Toast.makeText(binding.getRoot().getContext(), "Successfully Changed", Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        Toast.makeText(binding.getRoot().getContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

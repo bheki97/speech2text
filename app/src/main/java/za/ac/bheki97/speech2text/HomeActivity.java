@@ -244,6 +244,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 finish();
+                startActivity(new Intent(HomeActivity.this,MainActivity.class));
 
                 return false;
             }

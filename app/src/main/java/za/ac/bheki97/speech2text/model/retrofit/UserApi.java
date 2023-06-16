@@ -1,5 +1,7 @@
 package za.ac.bheki97.speech2text.model.retrofit;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,6 +19,7 @@ import za.ac.bheki97.speech2text.model.MakeSpeakerDto;
 import za.ac.bheki97.speech2text.model.MessageDto;
 import za.ac.bheki97.speech2text.model.event.Event;
 import za.ac.bheki97.speech2text.model.event.GuestEvent;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Speaker;
 import za.ac.bheki97.speech2text.model.translation.TranslationDto;
 import za.ac.bheki97.speech2text.model.user.AuthRequest;
 import za.ac.bheki97.speech2text.model.user.AuthUserInfo;
@@ -47,6 +50,11 @@ public interface UserApi {
     @POST("/speech/transcribe")
     Call<ResponseBody> trascribeAudio(@Part MultipartBody.Part file, @Part("language") String language);
 
+    @Multipart
+    @POST("/speech/event")
+    Call<ResponseBody> trascribeSpeakerSpeech(@Part MultipartBody.Part file
+            ,@Part("languageOri") String languageOri, @Part("languageOri") String languageTrans);
+
     @POST("/event")
     Call<ResponseBody> hostEvent(@Header("Authorization")String jwtToken,@Body Event event);
 
@@ -55,6 +63,11 @@ public interface UserApi {
 
     @DELETE("/event/{id}")
     Call<Boolean> deleteEvent(@Path("id") String id);
+
+    @Multipart
+    @PUT("/event/{guestId}/{language}")
+    Call<ResponseBody> addSpeech(@Part MultipartBody.Part file,
+                                 @Path("guestId")Integer guestId,@Path("language")String language);
 
     @POST("/event/joined")
     Call<GuestEvent[]> getAllJoinedEvents(@Body String id);
@@ -70,4 +83,12 @@ public interface UserApi {
 
     @POST("/event/join")
     Call<Boolean> joinEvent(@Body JoinEventDto joinEventDto);
+
+    @GET("/event/{eventKey}/speaker")
+    Call<List<Speaker>> getAllSpeakersOfTheEvent(@Path("eventKey") String eventKey);
+
+    @GET("/event/{eventKey}/speaker/{language}")
+    Call<List<Speaker>> getAllSpeakersOfTheEventFor(@Path("eventKey") String eventKey,
+            @Path("language")String language);
+
 }

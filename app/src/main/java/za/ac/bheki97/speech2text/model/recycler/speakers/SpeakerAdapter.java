@@ -1,4 +1,4 @@
-package za.ac.bheki97.speech2text.recycler.speakers;
+package za.ac.bheki97.speech2text.model.recycler.speakers;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import za.ac.bheki97.speech2text.databinding.RowSpeakerBinding;
-import za.ac.bheki97.speech2text.recycler.speakers.model.Speaker;
+import za.ac.bheki97.speech2text.model.recycler.guest.model.Speaker;
 
 public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerHolder>{
 
@@ -22,7 +22,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerHolder>{
     @NonNull
     @Override
     public SpeakerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RowSpeakerBinding binding = RowSpeakerBinding.inflate(LayoutInflater.from(parent.getContext()));
+        RowSpeakerBinding binding = RowSpeakerBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
 
         return new SpeakerHolder(binding);
     }
@@ -30,7 +30,15 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerHolder>{
     @Override
     public void onBindViewHolder(@NonNull SpeakerHolder holder, int position) {
         Speaker speaker = speakers.get(position);
-        holder.bind(speaker);
+        holder.bind(this,position);
+    }
+
+    public List<Speaker> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(List<Speaker> speakers) {
+        this.speakers = speakers;
     }
 
     @Override
