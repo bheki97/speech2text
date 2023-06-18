@@ -52,6 +52,8 @@ public class SpeakerHolder extends RecyclerView.ViewHolder {
         speaker = adapter.getSpeakers().get(position);
         String names = speaker.getAccount().getFirstname()+" "+speaker.getAccount().getLastname();
         binding.txtSpeakername.setText(names);
+        binding.txtspeech.setText(speaker.getSpeech());
+
 
     }
 
@@ -98,11 +100,15 @@ public class SpeakerHolder extends RecyclerView.ViewHolder {
                                 Toast.makeText(binding.getRoot().getContext(),"Bad Response",Toast.LENGTH_SHORT).show();
                             }
 
-                        }else if(response.code()==403){
-                            Toast.makeText(binding.getRoot().getContext(),"Access Denied",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(binding.getRoot().getContext(),"Bad Request",Toast.LENGTH_SHORT).show();
+                        }else {
+                            try {
+                                Toast.makeText(binding.getRoot().getContext(),response.errorBody().string(),Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+
+
                     }
 
                     @Override
